@@ -9,6 +9,8 @@ public class AnamnesisManager : MonoBehaviour
     [Header("Configuração")]
     public List<DialogueStepSO> dialogueSteps;  
     public List<AnamnesisStepSO> questionSteps; 
+    public Canvas worldSpaceCanvas;
+    public TextMeshProUGUI pranchetaText;
     public TextMeshProUGUI npcText;
     public Button[] optionButtons;                 
     public TextMeshProUGUI[] optionTexts;
@@ -98,6 +100,7 @@ public class AnamnesisManager : MonoBehaviour
         Debug.Log($"Score: {score}/{questionSteps.Count}");
         foreach (var e in wrongLog)
             Debug.Log($"Pergunta errada: {e.q} — {e.justification}");
-        
+
+        worldSpaceCanvas.gameObject.SetActive(false);
     }
 }
