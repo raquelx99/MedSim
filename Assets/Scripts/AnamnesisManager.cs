@@ -7,19 +7,30 @@ using TMPro;
 public class AnamnesisManager : MonoBehaviour
 {
     [Header("Configuração")]
-    public List<DialogueStepSO> dialogueSteps;  
-    public List<AnamnesisStepSO> questionSteps; 
+    private List<DialogueStepSO> dialogueSteps;
+    private List<AnamnesisStepSO> questionSteps;
+
     public Canvas worldSpaceCanvas;
-    public TextMeshProUGUI pranchetaText;
     public TextMeshProUGUI npcText;
     public Button[] optionButtons;                 
     public TextMeshProUGUI[] optionTexts;
+    public ScoreManager scoreManager;
 
     private int dialogueIndex = 0;
     private int questionIndex = 0;
-    private bool inDialoguePhase = true;
-    private int score = 0;
     private List<(string q, string justification)> wrongLog = new();
+
+    public void Init(List<DialogueStepSO> dialogues, List<AnamnesisStepSO> questions)
+    {
+        dialogueSteps = dialogues;
+        questionSteps = questions;
+        dialogueIndex = 0;
+        questionIndex = 0;
+        wrongLog.Clear();
+
+        worldSpaceCanvas.gameObject.SetActive(true);
+        ShowDialogueStep();
+    }
 
     void Start()
     {
@@ -56,7 +67,6 @@ public class AnamnesisManager : MonoBehaviour
         }
         else
         {
-            inDialoguePhase = false;
             questionIndex = 0;
             ShowQuestionStep();
         }
@@ -84,8 +94,9 @@ public class AnamnesisManager : MonoBehaviour
     {
         var q = questionSteps[questionIndex].question;
         if (chosen == q.correctOptionIndex)
-            score++;
+            scoreManager.Add(true);
         else
+            scoreManager.Add(false);
             wrongLog.Add((q.prompt, q.wrongJustification));
 
         questionIndex++;
@@ -97,10 +108,10 @@ public class AnamnesisManager : MonoBehaviour
 
     void FinishAnamnesis()
     {
-        Debug.Log($"Score: {score}/{questionSteps.Count}");
         foreach (var e in wrongLog)
             Debug.Log($"Pergunta errada: {e.q} — {e.justification}");
 
         worldSpaceCanvas.gameObject.SetActive(false);
+        PhaseManager.Instance.FinishPhase();
     }
 }
