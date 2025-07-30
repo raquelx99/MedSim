@@ -14,7 +14,7 @@ public class LabOrderManager : MonoBehaviour
 
     public Transform resultButtonContainer;
     public GameObject resultButtonPrefab;
-    public GameObject resultPanel;
+    public Transform resultContainer;
     public TextMeshProUGUI resultText;
     public GameObject togglePrefab;
     public Transform toggleGrid;
@@ -86,6 +86,7 @@ public class LabOrderManager : MonoBehaviour
             {
                 ShowSingleResult(resultData);
             });
+
         }
     }
 
@@ -100,7 +101,7 @@ public class LabOrderManager : MonoBehaviour
 
     void ShowSingleResult(PhaseExamResult result)
     {
-        resultPanel.SetActive(true);
+        resultContainer.gameObject.SetActive(true);
 
         if (result.examType.isImaging)
         {
