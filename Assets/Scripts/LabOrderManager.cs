@@ -67,6 +67,7 @@ public class LabOrderManager : MonoBehaviour
 
         ShowResultsUI();
 
+        
         FindObjectOfType<PhaseManager>().NextPart();
     }
     
@@ -80,12 +81,17 @@ public class LabOrderManager : MonoBehaviour
             var resultData = GetResultDataForExam(examID);
 
             GameObject btn = Instantiate(resultButtonPrefab, resultButtonContainer);
-            btn.GetComponentInChildren<TextMeshProUGUI>().text = resultData.examType.examName;
+            Button button = btn.GetComponent<Button>();
+            TextMeshProUGUI label = btn.GetComponentInChildren<TextMeshProUGUI>();
 
-            btn.GetComponent<Button>().onClick.AddListener(() =>
+            label.text = resultData.examType.examName;
+
+            button.onClick.AddListener(() =>
             {
                 ShowSingleResult(resultData);
             });
+
+            button.gameObject.SetActive(true);
 
         }
     }

@@ -63,11 +63,11 @@ public class PhaseManager : MonoBehaviour
         pranchetaButton.gameObject.SetActive(false);
         uIPedidoExames.SetActive(true);
         labOrderManager.gameObject.SetActive(true);
-
     }
 
     void StartDiagnosisPhase()
     {
+        uIPedidoExames.SetActive(false);
         Debug.Log("Fase de diagnóstico iniciada.");
     }
 
