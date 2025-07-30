@@ -24,6 +24,11 @@ MonoBehaviour:
   correctLabTestIDs:
   - MAPA
   - hemograma completo
+  examResults:
+  - examType: {fileID: 11400000, guid: 99202a97022490b4f8e0dfe4e846de9f, type: 2}
+    isAbnormal: 1
+  - examType: {fileID: 11400000, guid: b92e85175bc27014da04e4b76aa97d3d, type: 2}
+    isAbnormal: 1
   possibleDiagnosis:
   - "hipertens\xE3o"
   - ansiedade

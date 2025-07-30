@@ -9,6 +9,7 @@ public class PhaseManager : MonoBehaviour
 
     public PatientPhaseSO phaseData;
     public ScoreManager scoreManager;
+    public LabOrderManager labOrderManager;
 
     public enum Part { Anamnese, Exam, Labs, Diagnosis }
     public Part currentPart { get; private set; } = Part.Anamnese;
@@ -16,6 +17,7 @@ public class PhaseManager : MonoBehaviour
     public TextMeshProUGUI pranchetaText;
 
     public Button pranchetaButton;
+    public GameObject uIPedidoExames;
 
     void Awake()
     {
@@ -57,7 +59,11 @@ public class PhaseManager : MonoBehaviour
 
     void StartLabsPhase()
     {
-        Debug.Log("Fase de exames laboratoriais iniciada.");
+        pranchetaText.text = "Exames Laboratoriais: Selecione os exames necessários e clique em confirmar.";
+        pranchetaButton.gameObject.SetActive(false);
+        uIPedidoExames.SetActive(true);
+        labOrderManager.gameObject.SetActive(true);
+
     }
 
     void StartDiagnosisPhase()

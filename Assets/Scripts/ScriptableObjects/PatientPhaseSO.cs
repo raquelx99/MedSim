@@ -8,7 +8,8 @@ public class PatientPhaseSO : ScriptableObject
     public DialogueStepSO[] dialogueSteps;
     public AnamnesisStepSO[] anamnesisSteps;
     public string[] requiredExamObjectIDs;      
-    public string[] correctLabTestIDs;             
+    public string[] correctLabTestIDs;
+    public PhaseExamResult[] examResults;             
     public string[] possibleDiagnosis;            
     public int correctDiagnosisIndex;            
 }
