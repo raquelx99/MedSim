@@ -10,6 +10,7 @@ public class PhaseManager : MonoBehaviour
     public PatientPhaseSO phaseData;
     public ScoreManager scoreManager;
     public LabOrderManager labOrderManager;
+    public DiagnosisManager diagnosisManager;
 
     public enum Part { Anamnese, Exam, Labs, Diagnosis }
     public Part currentPart { get; private set; } = Part.Anamnese;
@@ -18,6 +19,7 @@ public class PhaseManager : MonoBehaviour
 
     public Button pranchetaButton;
     public GameObject uIPedidoExames;
+    public GameObject uIDiagnosis;
 
     void Awake()
     {
@@ -68,6 +70,11 @@ public class PhaseManager : MonoBehaviour
     void StartDiagnosisPhase()
     {
         uIPedidoExames.SetActive(false);
+        pranchetaText.text = "Diagnóstico: Selecione o diagnóstico correto e confirme.";
+        labOrderManager.gameObject.SetActive(false);
+        diagnosisManager.gameObject.SetActive(true);
+        uIDiagnosis.SetActive(true);
+
         Debug.Log("Fase de diagnóstico iniciada.");
     }
 

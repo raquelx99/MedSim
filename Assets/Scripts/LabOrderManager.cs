@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using System.Collections;
 
 public class LabOrderManager : MonoBehaviour
 {
@@ -22,10 +23,15 @@ public class LabOrderManager : MonoBehaviour
 
     void Start()
     {
-        GenerateExamToggles();
-        Debug.Log("Gerou toggles de exames.");
+        StartCoroutine(DelayedToggleGeneration());
     }
 
+    IEnumerator DelayedToggleGeneration()
+    {
+        yield return new WaitForEndOfFrame();
+        GenerateExamToggles();
+    }
+    
     void GenerateExamToggles()
     {
         foreach (var exam in phaseData.examResults)
