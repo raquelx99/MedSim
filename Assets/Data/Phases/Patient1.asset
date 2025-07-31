@@ -29,6 +29,8 @@ MonoBehaviour:
     isAbnormal: 1
   - examType: {fileID: 11400000, guid: b92e85175bc27014da04e4b76aa97d3d, type: 2}
     isAbnormal: 1
+  - examType: {fileID: 11400000, guid: a2f847d3bbbeaf14581cd84f394222f3, type: 2}
+    isAbnormal: 0
   possibleDiagnosis:
   - "hipertens\xE3o"
   - ansiedade

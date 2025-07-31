@@ -122,6 +122,8 @@ public class LabOrderManager : MonoBehaviour
             result.examType.normalImageResult;
             resultText.text = "Imagem aparecerá no negatoscópio.";
 
+            Debug.Log($"Exibindo imagem para o exame: {result.examType.examName}");
+
             negatoscope.ShowImage(sprite);
         }
         else
