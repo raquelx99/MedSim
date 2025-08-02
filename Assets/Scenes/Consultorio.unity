@@ -1016,6 +1016,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 292046721}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ae8b46c956d826f40b5b0b1bedde9755,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 292046727}
   m_SourcePrefab: {fileID: 100100000, guid: ae8b46c956d826f40b5b0b1bedde9755, type: 3}
 --- !u!1 &87215748
 GameObject:
@@ -1655,8 +1659,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 922141995}
   m_HandleRect: {fileID: 922141994}
   m_Direction: 2
-  m_Value: -0.024335438
-  m_Size: 0.8695134
+  m_Value: -0.000015343881
+  m_Size: 0.9378349
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1920,6 +1924,20 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 85795939}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &292046727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292046717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed890755c73e7464989416e365d369a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  imageSlot: {fileID: 1168857685}
+  panel: {fileID: 21560322}
 --- !u!1 &308785089
 GameObject:
   m_ObjectHideFlags: 0
@@ -2047,7 +2065,7 @@ RectTransform:
   m_GameObject: {fileID: 354475444}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0.000128}
-  m_LocalScale: {x: 0.000003706975, y: 0.000007264786, z: 0}
+  m_LocalScale: {x: 0.0000040639566, y: 0.000009346873, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 21560323}
@@ -2155,7 +2173,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 18.335342}
+  m_AnchoredPosition: {x: 0, y: 17.899717}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &375791017
@@ -4507,7 +4525,7 @@ RectTransform:
   m_GameObject: {fileID: 771773557}
   m_LocalRotation: {x: 0.09396284, y: 0.09396285, z: 0.7008359, w: 0.70083594}
   m_LocalPosition: {x: 0, y: 0, z: 0.000282}
-  m_LocalScale: {x: 0.000008746873, y: 0.000012895103, z: 0}
+  m_LocalScale: {x: 0.00000955306, y: 0.000012895103, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1752042903}
@@ -5172,6 +5190,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 878069841}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e95398efd7962da40b230287caa9e96f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 878069845}
   m_SourcePrefab: {fileID: 100100000, guid: e95398efd7962da40b230287caa9e96f, type: 3}
 --- !u!1 &878069840 stripped
 GameObject:
@@ -5206,6 +5228,20 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 878069839}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &878069845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 878069840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed890755c73e7464989416e365d369a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  imageSlot: {fileID: 2005448952}
+  panel: {fileID: 1752042902}
 --- !u!1 &907751311
 GameObject:
   m_ObjectHideFlags: 0
@@ -7231,7 +7267,7 @@ RectTransform:
   m_GameObject: {fileID: 1168857683}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 21560323}
@@ -7582,6 +7618,7 @@ GameObject:
   - component: {fileID: 1276649407}
   - component: {fileID: 1276649409}
   - component: {fileID: 1276649410}
+  - component: {fileID: 1276649411}
   m_Layer: 0
   m_Name: Socket Interactor Finger
   m_TagString: Untagged
@@ -7682,6 +7719,20 @@ MonoBehaviour:
   m_InteractableHoverScale: 1
   m_RecycleDelayTime: 1
   targetTag: oximetro
+--- !u!114 &1276649411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1276649406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce4e801950fe6b94dad16b9e8176cbd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  display: {fileID: 292046727}
+  displayImage: {fileID: 21300000, guid: 38e32b72dc229d34c801a76170f0765c, type: 3}
 --- !u!1001 &1320404450
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10665,7 +10716,7 @@ RectTransform:
   m_GameObject: {fileID: 2005448950}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1752042903}
@@ -10725,6 +10776,7 @@ GameObject:
   - component: {fileID: 2011786665}
   - component: {fileID: 2011786666}
   - component: {fileID: 2011786667}
+  - component: {fileID: 2011786668}
   m_Layer: 0
   m_Name: Socket Interactor
   m_TagString: Untagged
@@ -10825,6 +10877,20 @@ MonoBehaviour:
   m_InteractableHoverScale: 1
   m_RecycleDelayTime: 1
   targetTag: esfigmo
+--- !u!114 &2011786668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2011786664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce4e801950fe6b94dad16b9e8176cbd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  display: {fileID: 878069845}
+  displayImage: {fileID: 21300000, guid: 5f58d99e178c85c48b50933ad92c8b2c, type: 3}
 --- !u!1 &2060699672
 GameObject:
   m_ObjectHideFlags: 0
