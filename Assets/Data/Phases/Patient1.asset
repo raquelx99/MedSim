@@ -21,9 +21,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bc670f873d9cdfe46800082d7c56fba0, type: 2}
   requiredExamObjectIDs:
   - esfigmomanometro
+  - oximetro
+  - estetoscopio
   correctLabTestIDs:
-  - MAPA
-  - hemograma completo
+  - 1
+  - 2
   examResults:
   - examType: {fileID: 11400000, guid: 99202a97022490b4f8e0dfe4e846de9f, type: 2}
     isAbnormal: 1

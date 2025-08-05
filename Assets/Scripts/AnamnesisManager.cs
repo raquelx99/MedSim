@@ -93,11 +93,17 @@ public class AnamnesisManager : MonoBehaviour
     void OnQuestionSelected(int chosen)
     {
         var q = questionSteps[questionIndex].question;
-        if (chosen == q.correctOptionIndex)
-            scoreManager.Add(true);
-        else
-            scoreManager.Add(false);
-            wrongLog.Add((q.prompt, q.wrongJustification));
+        bool acertou = (chosen == q.correctOptionIndex);
+        int pointsToApply = scoreManager.GetPointsForAnamnesis(q.prompt, acertou);
+
+        scoreManager.RegisterScoreEntry(new ScoreEntry {
+            category = ScoreCategory.Anamnese,
+            severity = acertou ? ErrorSeverity.Leve : ErrorSeverity.Moderado,
+            actionID = q.prompt,
+            isCorrect = acertou,
+            justification = acertou ? "" : q.wrongJustification,
+            points = pointsToApply
+        });
 
         questionIndex++;
         if (questionIndex < questionSteps.Count)

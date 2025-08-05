@@ -21,29 +21,41 @@ public class PhysicalExamManager : MonoBehaviour
 
         usedObjectIDs.Add(objectID);
 
-        if (phaseData.requiredExamObjectIDs.Contains(objectID))
-        {
-            scoreManager.Add(true);
-            Debug.Log($"Usou corretamente: {objectID}");
-        }
-        else
-        {
-            scoreManager.Add(false);
-            Debug.Log($"Usou incorretamente: {objectID}");
-        }
+        bool acertou = phaseData.requiredExamObjectIDs.Contains(objectID);
+        int pointsToApply = scoreManager.GetPointsForPhysicalExam(objectID, acertou);
+
+        scoreManager.RegisterScoreEntry(new ScoreEntry {
+            category = ScoreCategory.PhysicalExam,
+            severity = acertou ? ErrorSeverity.Leve : ErrorSeverity.Moderado,
+            actionID = objectID,
+            isCorrect = acertou,
+            justification = acertou ? "" : "Instrumento inadequado para a situação.",
+            points = pointsToApply
+        });
+
+        Debug.Log(acertou ? $"Usou corretamente: {objectID}" : $"Usou incorretamente: {objectID}");
     }
-    
+
     public void FinishPhysicalExam()
     {
         foreach (var req in phaseData.requiredExamObjectIDs)
+        {
             if (!usedObjectIDs.Contains(req))
-                scoreManager.Add(false);
+            {
+                int pointsToApply = scoreManager.GetPointsForPhysicalExam(req, false);
+                scoreManager.RegisterScoreEntry(new ScoreEntry
+                {
+                    category = ScoreCategory.PhysicalExam,
+                    severity = ErrorSeverity.Moderado,
+                    actionID = req,
+                    isCorrect = false,
+                    justification = "Instrumento essencial não foi utilizado.",
+                    points = pointsToApply
+                });
+            }
+        }
 
-        foreach (var used in usedObjectIDs)
-            if (!System.Array.Exists(phaseData.requiredExamObjectIDs, id => id == used))
-                scoreManager.Add(false);
-
-        
         PhaseManager.Instance.FinishPhase();
+        
     }
 }

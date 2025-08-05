@@ -39,11 +39,12 @@ public class LabOrderManager : MonoBehaviour
             GameObject go = Instantiate(togglePrefab, toggleGrid);
             Toggle toggle = go.GetComponent<Toggle>();
             TextMeshProUGUI label = go.GetComponentInChildren<TextMeshProUGUI>();
+            var currentExam = exam;
 
             toggle.onValueChanged.AddListener((isOn) =>
             {
-                if (isOn) selectedLabs.Add(exam.examType.examID);
-                else selectedLabs.Remove(exam.examType.examID);
+                if (isOn) selectedLabs.Add(currentExam.examType.examID);
+                else selectedLabs.Remove(currentExam.examType.examID);
             });
 
             label.text = exam.examType.examName;
@@ -63,18 +64,47 @@ public class LabOrderManager : MonoBehaviour
     {
 
         foreach (var lab in selectedLabs)
-            scoreManager.Add(
-                System.Array.Exists(phaseData.correctLabTestIDs, id => id == lab)
-            );
+        {
+            bool acertou = System.Array.Exists(phaseData.correctLabTestIDs, id => id == lab);
+            int pointsToApply = scoreManager.GetPointsForLabExam(lab, acertou);
+
+            Debug.Log($"AVALIANDO EXAME SELECIONADO: ID='{lab}', Acertou?={acertou}, Pontos Aplicados={pointsToApply}");
+
+            scoreManager.RegisterScoreEntry(new ScoreEntry
+            {
+                category = ScoreCategory.LabExams,
+                severity = acertou ? ErrorSeverity.Leve : ErrorSeverity.Moderado,
+                actionID = lab,
+                isCorrect = acertou,
+                justification = acertou ? "" : "Exame desnecessário para o quadro clínico.",
+                points = pointsToApply
+            });
+        }
 
         foreach (var req in phaseData.correctLabTestIDs)
+        {
             if (!selectedLabs.Contains(req))
-                scoreManager.Add(false);
+            {
+                int pointsToApply = scoreManager.GetPointsForLabExam(req, false);
+
+                Debug.Log($"AVALIANDO EXAME ESQUECIDO: ID='{req}', Pontos Aplicados={pointsToApply}");
+
+                scoreManager.RegisterScoreEntry(new ScoreEntry
+                {
+                    category = ScoreCategory.LabExams,
+                    severity = ErrorSeverity.Moderado,
+                    actionID = req,
+                    isCorrect = false,
+                    justification = "Exame essencial não solicitado.",
+                    points = pointsToApply
+                });
+            }
+        }
 
         ShowResultsUI();
-
         
-        FindObjectOfType<PhaseManager>().NextPart();
+        PhaseManager.Instance.FinishPhase();
+
     }
     
     void ShowResultsUI()

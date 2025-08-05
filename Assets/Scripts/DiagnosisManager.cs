@@ -42,9 +42,19 @@ public class DiagnosisManager : MonoBehaviour
 
     public void ConfirmDiagnosis()
     {
-        bool correct = (chosenDiagnosisIndex == phaseData.correctDiagnosisIndex);
-        scoreManager.Add(correct);
-        Debug.Log($"Diagnóstico {phaseData.possibleDiagnosis[chosenDiagnosisIndex]} foi {(correct ? "correto" : "incorreto")}.");
+        bool acertou = (chosenDiagnosisIndex == phaseData.correctDiagnosisIndex);
+        string chosenDiagnosisText = phaseData.possibleDiagnosis[chosenDiagnosisIndex];
+        int pointsToApply = scoreManager.GetPointsForDiagnosis(chosenDiagnosisText, acertou);
+
+        scoreManager.RegisterScoreEntry(new ScoreEntry {
+            category = ScoreCategory.Diagnosis,
+            severity = ErrorSeverity.Grave,
+            actionID = chosenDiagnosisText,
+            isCorrect = acertou,
+            justification = acertou ? "" : "Diagnóstico incorreto.",
+            points = pointsToApply
+    });
+        Debug.Log($"Diagnóstico {phaseData.possibleDiagnosis[chosenDiagnosisIndex]} foi {(acertou ? "correto" : "incorreto")}.");
         FindObjectOfType<PhaseManager>().FinishPhase();
     }
 

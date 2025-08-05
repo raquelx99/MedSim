@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Linq;
 using TMPro;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class PhaseManager : MonoBehaviour
 {
@@ -65,6 +66,8 @@ public class PhaseManager : MonoBehaviour
         pranchetaButton.gameObject.SetActive(false);
         uIPedidoExames.SetActive(true);
         labOrderManager.gameObject.SetActive(true);
+        
+        Debug.Log("Fase de pedidos de exames iniciada.");
     }
 
     void StartDiagnosisPhase()
@@ -80,7 +83,8 @@ public class PhaseManager : MonoBehaviour
 
     public void FinishPhase()
     {
-        Debug.Log($"Fim da fase. Score: {scoreManager.score}");
+        string summary = scoreManager.GetScoreSummary();
+        Debug.Log($"Fim da fase.\n{summary}");
         NextPart();
     }
 }
