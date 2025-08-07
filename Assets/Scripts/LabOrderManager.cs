@@ -9,7 +9,7 @@ public class LabOrderManager : MonoBehaviour
 {
     public PatientPhaseSO phaseData;
     public ScoreManager scoreManager;
-    
+
     private Dictionary<string, Toggle> toggleDict = new();
     private HashSet<string> selectedLabs = new();
 
@@ -31,7 +31,7 @@ public class LabOrderManager : MonoBehaviour
         yield return new WaitForEndOfFrame();
         GenerateExamToggles();
     }
-    
+
     void GenerateExamToggles()
     {
         foreach (var exam in phaseData.examResults)
@@ -49,7 +49,7 @@ public class LabOrderManager : MonoBehaviour
 
             label.text = exam.examType.examName;
             toggleDict[exam.examType.examID] = toggle;
-            
+
             go.SetActive(true);
         }
     }
@@ -102,11 +102,11 @@ public class LabOrderManager : MonoBehaviour
         }
 
         ShowResultsUI();
-        
-        PhaseManager.Instance.FinishPhase();
+
+        PhaseManager.Instance.FinishStep();
 
     }
-    
+
     void ShowResultsUI()
     {
         foreach (Transform child in resultButtonContainer)
@@ -164,6 +164,17 @@ public class LabOrderManager : MonoBehaviour
                 result.examType.defaultAbnormalResultText :
                 result.examType.defaultNormalResultText;
         }
+    }
+    
+    public void ResetOrders()
+    {
+        selectedLabs.Clear();
+        foreach (var toggle in toggleDict.Values)
+        {
+            toggle.isOn = false;
+        }
+        resultContainer.gameObject.SetActive(false);
+        negatoscope.Hide();
     }
 
 }

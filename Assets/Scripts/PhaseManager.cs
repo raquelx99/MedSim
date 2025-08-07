@@ -21,6 +21,9 @@ public class PhaseManager : MonoBehaviour
     public Button pranchetaButton;
     public GameObject uIPedidoExames;
     public GameObject uIDiagnosis;
+    public FeedbackManager feedbackManager;
+    public float totalPhaseTime { get; private set; }
+    private float startTime;
 
     void Awake()
     {
@@ -30,6 +33,7 @@ public class PhaseManager : MonoBehaviour
     void Start()
     {
         StartAnamnese();
+        startTime = Time.time;
     }
 
     public void NextPart()
@@ -40,6 +44,7 @@ public class PhaseManager : MonoBehaviour
             case Part.Exam: StartExamPhase(); break;
             case Part.Labs: StartLabsPhase(); break;
             case Part.Diagnosis: StartDiagnosisPhase(); break;
+            case Part.Diagnosis + 1: FinishPhase(); break;
         }
     }
 
@@ -66,7 +71,7 @@ public class PhaseManager : MonoBehaviour
         pranchetaButton.gameObject.SetActive(false);
         uIPedidoExames.SetActive(true);
         labOrderManager.gameObject.SetActive(true);
-        
+
         Debug.Log("Fase de pedidos de exames iniciada.");
     }
 
@@ -81,10 +86,30 @@ public class PhaseManager : MonoBehaviour
         Debug.Log("Fase de diagnóstico iniciada.");
     }
 
+    public void FinishStep()
+    {
+        NextPart();
+    }
+
     public void FinishPhase()
     {
+        uIDiagnosis.SetActive(false);
+        feedbackManager.gameObject.SetActive(true);
         string summary = scoreManager.GetScoreSummary();
+        totalPhaseTime = Time.time - startTime;
+        feedbackManager.ShowFeedback();
         Debug.Log($"Fim da fase.\n{summary}");
-        NextPart();
+    }
+    
+    public void RestartPhase()
+    {
+        currentPart = Part.Anamnese;
+        StartAnamnese();
+        scoreManager.ResetScores();
+        labOrderManager.ResetOrders();
+        diagnosisManager.ResetDiagnosis();
+        pranchetaButton.gameObject.SetActive(false);
+        uIPedidoExames.SetActive(false);
+        uIDiagnosis.SetActive(false);
     }
 }

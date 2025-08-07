@@ -33,7 +33,7 @@ public class ScoreManager : MonoBehaviour
         {
             return isCorrect ? rule.correctPoints : -rule.incorrectPenalty;
         }
-        return isCorrect ? 20 : 0; 
+        return isCorrect ? 20 : 0;
     }
 
     public int GetPointsForPhysicalExam(string itemID, bool isCorrect)
@@ -63,7 +63,7 @@ public class ScoreManager : MonoBehaviour
         {
             return isCorrect ? rule.correctPoints : -rule.incorrectPenalty;
         }
-        return isCorrect ? 40 : -20; 
+        return isCorrect ? 40 : -20;
     }
 
     public void RegisterScoreEntry(ScoreEntry entry)
@@ -120,6 +120,16 @@ public class ScoreManager : MonoBehaviour
         }
 
         return summary;
+    }
+
+    public void ResetScores()
+    {
+        entries.Clear();
+    }
+    
+    public IReadOnlyList<ScoreEntry> GetAllEntries()
+    {
+        return entries;
     }
 
 }

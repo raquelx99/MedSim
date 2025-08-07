@@ -10,7 +10,7 @@ public class DiagnosisManager : MonoBehaviour
 
     public Transform diagnosisButtonContainer;
     public GameObject diagnosisButtonPrefab;
-    
+
     void Start()
     {
         GenerateDiagnosisButtons();
@@ -46,16 +46,25 @@ public class DiagnosisManager : MonoBehaviour
         string chosenDiagnosisText = phaseData.possibleDiagnosis[chosenDiagnosisIndex];
         int pointsToApply = scoreManager.GetPointsForDiagnosis(chosenDiagnosisText, acertou);
 
-        scoreManager.RegisterScoreEntry(new ScoreEntry {
+        scoreManager.RegisterScoreEntry(new ScoreEntry
+        {
             category = ScoreCategory.Diagnosis,
             severity = ErrorSeverity.Grave,
             actionID = chosenDiagnosisText,
             isCorrect = acertou,
             justification = acertou ? "" : "Diagnóstico incorreto.",
             points = pointsToApply
-    });
+        });
         Debug.Log($"Diagnóstico {phaseData.possibleDiagnosis[chosenDiagnosisIndex]} foi {(acertou ? "correto" : "incorreto")}.");
-        FindObjectOfType<PhaseManager>().FinishPhase();
+        FindObjectOfType<PhaseManager>().FinishStep();
     }
 
+    public void ResetDiagnosis()
+    {
+        chosenDiagnosisIndex = -1;
+        foreach (Transform child in diagnosisButtonContainer)
+        {
+            Destroy(child.gameObject);
+        }    
+    }
 }

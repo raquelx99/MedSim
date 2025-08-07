@@ -118,6 +118,6 @@ public class AnamnesisManager : MonoBehaviour
             Debug.Log($"Pergunta errada: {e.q} — {e.justification}");
 
         worldSpaceCanvas.gameObject.SetActive(false);
-        PhaseManager.Instance.FinishPhase();
+        PhaseManager.Instance.FinishStep();
     }
 }

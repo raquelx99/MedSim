@@ -55,7 +55,7 @@ public class PhysicalExamManager : MonoBehaviour
             }
         }
 
-        PhaseManager.Instance.FinishPhase();
+        PhaseManager.Instance.FinishStep();
         
     }
 }
