@@ -15,10 +15,12 @@ public class AnamnesisManager : MonoBehaviour
     public Button[] optionButtons;                 
     public TextMeshProUGUI[] optionTexts;
     public ScoreManager scoreManager;
+    public AudioSource audioSource;
 
     private int dialogueIndex = 0;
     private int questionIndex = 0;
     private List<(string q, string justification)> wrongLog = new();
+    
 
     public void Init(List<DialogueStepSO> dialogues, List<AnamnesisStepSO> questions)
     {
@@ -43,28 +45,28 @@ public class AnamnesisManager : MonoBehaviour
         optionButtons[1].gameObject.SetActive(false);
 
         var dlg = dialogueSteps[dialogueIndex];
-        npcText.text = dlg.npcLine;
+
+        if (dlg.npcLineClip != null)
+            audioSource.PlayOneShot(dlg.npcLineClip);
+
         optionTexts[0].text = dlg.playerPrompt;
 
         optionButtons[0].onClick.RemoveAllListeners();
         optionButtons[0].onClick.AddListener(OnDialogueOption);
     }
 
-    void OnDialogueOption()
+   void OnDialogueOption()
     {
-
         var dlg = dialogueSteps[dialogueIndex];
-        if (!string.IsNullOrEmpty(dlg.npcResponse))
-        {
-            npcText.text = dlg.npcResponse;
-        }
+
+        // toca a resposta fixa do NPC
+        if (dlg.npcResponseClip != null)
+            audioSource.PlayOneShot(dlg.npcResponseClip);
 
         dialogueIndex++;
 
         if (dialogueIndex < dialogueSteps.Count)
-        {
             Invoke(nameof(ShowDialogueStep), 0.5f);
-        }
         else
         {
             questionIndex = 0;
@@ -93,16 +95,24 @@ public class AnamnesisManager : MonoBehaviour
     void OnQuestionSelected(int chosen)
     {
         var q = questionSteps[questionIndex].question;
+
+        var clips = q.patientResponses[chosen].responseClips;
+        if (clips != null && clips.Length > 0)
+        {
+            AudioClip clip = clips[Random.Range(0, clips.Length)];
+            audioSource.PlayOneShot(clip);
+        }
+
         bool acertou = (chosen == q.correctOptionIndex);
         int pointsToApply = scoreManager.GetPointsForAnamnesis(q.prompt, acertou);
 
         scoreManager.RegisterScoreEntry(new ScoreEntry {
-            category = ScoreCategory.Anamnese,
-            severity = acertou ? ErrorSeverity.Leve : ErrorSeverity.Moderado,
-            actionID = q.prompt,
-            isCorrect = acertou,
+            category      = ScoreCategory.Anamnese,
+            severity      = acertou ? ErrorSeverity.Leve : ErrorSeverity.Moderado,
+            actionID      = q.prompt,
+            isCorrect     = acertou,
             justification = acertou ? "" : q.wrongJustification,
-            points = pointsToApply
+            points        = pointsToApply
         });
 
         questionIndex++;
