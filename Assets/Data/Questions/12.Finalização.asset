@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d295674b387f60f49bd0dc4de3c83ee8, type: 3}
   m_Name: "12.Finaliza\xE7\xE3o"
   m_EditorClassIdentifier: 
-  prompt: 
+  prompt: 12
   options:
   - "Certo. Ah, s\xF3 mais uma coisa antes de examin\xE1-lo, o senhor dorme bem \xE0
     noite?"

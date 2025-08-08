@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d295674b387f60f49bd0dc4de3c83ee8, type: 3}
   m_Name: "5.Antecedentes M\xE9dicos"
   m_EditorClassIdentifier: 
-  prompt: 
+  prompt: 5
   options:
   - "Certo. E suas articula\xE7\xF5es, tem sentido dor nos joelhos, ombros ou em
     outro lugar?"

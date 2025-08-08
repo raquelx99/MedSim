@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d295674b387f60f49bd0dc4de3c83ee8, type: 3}
   m_Name: "7.Hist\xF3ria Familiar"
   m_EditorClassIdentifier: 
-  prompt: 
+  prompt: 7
   options:
   - "Certo. O senhor j\xE1 mencionou seu pai. Al\xE9m dele, sua m\xE3e ou seus irm\xE3os
     t\xEAm alguma doen\xE7a importante?"

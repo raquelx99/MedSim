@@ -33,7 +33,6 @@ MonoBehaviour:
   requiredExamObjectIDs:
   - esfigmomanometro
   - oximetro
-  - estetoscopio
   correctLabTestIDs:
   - 1
   - 2

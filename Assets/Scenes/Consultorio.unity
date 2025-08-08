@@ -1889,8 +1889,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 922141995}
   m_HandleRect: {fileID: 922141994}
   m_Direction: 2
-  m_Value: -0.000005114645
-  m_Size: 0.94033295
+  m_Value: -0.026541596
+  m_Size: 0.876246
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2197,22 +2197,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61ffc8e5337e18c4c9b282c2ebd91b49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anamnesisScores: []
+  anamnesisScores:
+  - id: 1
+    correctPoints: 1
+    incorrectPenalty: 3
+  - id: 2
+    correctPoints: 1
+    incorrectPenalty: 2
+  - id: 3
+    correctPoints: 1
+    incorrectPenalty: 2
+  - id: 4
+    correctPoints: 2
+    incorrectPenalty: 2
+  - id: 11
+    correctPoints: 1
+    incorrectPenalty: 3
   physicalExamScores:
   - id: oximetro
     correctPoints: 4
     incorrectPenalty: 0
   - id: esfigmomanometro
-    correctPoints: 8
+    correctPoints: 10
     incorrectPenalty: 0
   - id: estetoscopio
     correctPoints: 6
     incorrectPenalty: 0
   - id: otoscopio
-    correctPoints: 2
+    correctPoints: 0
     incorrectPenalty: 0
   - id: oftalmoscopio
-    correctPoints: 4
+    correctPoints: 2
     incorrectPenalty: 0
   labExamScores:
   - id: 1
@@ -2429,7 +2444,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 17.899998}
+  m_AnchoredPosition: {x: 0, y: 18.375137}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &375791017

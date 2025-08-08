@@ -13,7 +13,16 @@ public class PhysicalExamManager : MonoBehaviour
     {
         if (PhaseManager.Instance.currentPart != PhaseManager.Part.Exam)
         {
-            Debug.Log("Objeto usado fora da fase de exame físico — ignorado.");
+            scoreManager.RegisterScoreEntry(new ScoreEntry
+            {
+                category = ScoreCategory.PhysicalExam,
+                severity = ErrorSeverity.Moderado,
+                actionID = objectID,
+                isCorrect = false,
+                justification = "Tentativa de uso de objeto fora da fase de exame físico.",
+                points = -2
+            });
+            Debug.Log($"{objectID} usado fora da fase de exame físico : -2 pontos");
             return;
         }
 
@@ -21,19 +30,17 @@ public class PhysicalExamManager : MonoBehaviour
 
         usedObjectIDs.Add(objectID);
 
-        bool acertou = phaseData.requiredExamObjectIDs.Contains(objectID);
-        int pointsToApply = scoreManager.GetPointsForPhysicalExam(objectID, acertou);
+        int pointsToApply = scoreManager.GetPointsForPhysicalExam(objectID, true);
 
         scoreManager.RegisterScoreEntry(new ScoreEntry {
             category = ScoreCategory.PhysicalExam,
-            severity = acertou ? ErrorSeverity.Leve : ErrorSeverity.Moderado,
+            severity = ErrorSeverity.Moderado,
             actionID = objectID,
-            isCorrect = acertou,
-            justification = acertou ? "" : "Instrumento inadequado para a situação.",
+            isCorrect = true,
             points = pointsToApply
         });
 
-        Debug.Log(acertou ? $"Usou corretamente: {objectID}" : $"Usou incorretamente: {objectID}");
+        //Debug.Log(acertou ? $"Usou corretamente: {objectID}" : $"Usou incorretamente: {objectID}");
     }
 
     public void FinishPhysicalExam()

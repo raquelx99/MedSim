@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d295674b387f60f49bd0dc4de3c83ee8, type: 3}
   m_Name: 8.HabitosVida
   m_EditorClassIdentifier: 
-  prompt: 
+  prompt: 8
   options:
   - "Sua f\xE9 e suas cren\xE7as lhe ajudam a lidar com os problemas?"
   - "Ok. Agora sobre sua rotina. Como \xE9 sua alimenta\xE7\xE3o no dia a dia? E

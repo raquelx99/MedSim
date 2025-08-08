@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d295674b387f60f49bd0dc4de3c83ee8, type: 3}
   m_Name: "6.Uso de Medica\xE7\xF5es"
   m_EditorClassIdentifier: 
-  prompt: 
+  prompt: 6
   options:
   - "Voltando \xE0quela tontura, ela \xE9 do tipo que o quarto roda ou \xE9 mais
     uma sensa\xE7\xE3o de que vai desmaiar?"

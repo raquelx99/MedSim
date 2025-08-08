@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d295674b387f60f49bd0dc4de3c83ee8, type: 3}
   m_Name: "10.Dimens\xE3oSocial"
   m_EditorClassIdentifier: 
-  prompt: 
+  prompt: 10
   options:
   - "Certo. O senhor tem alguma f\xE9 ou cren\xE7a que lhe ajuda? E em casa, no trabalho,
     o senhor tem uma boa rede de apoio? Algu\xE9m com quem contar?"
