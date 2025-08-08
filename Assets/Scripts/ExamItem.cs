@@ -25,12 +25,6 @@ public class ExamItem : MonoBehaviour
 
     void OnGrabbed(SelectEnterEventArgs args)
     {
-        Debug.Log($"Objeto médico '{objectID}' foi usado.");
-
-        PhysicalExamManager examManager = FindObjectOfType<PhysicalExamManager>();
-        if (examManager != null)
-        {
-            examManager.RegisterExamItem(objectID);
-        }
+        Debug.Log($"Objeto médico '{objectID}' foi pego.");
     }
 }

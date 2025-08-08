@@ -11,7 +11,18 @@ public class InstrumentInteraction : MonoBehaviour
     {
         if (other.CompareTag(instrumentTag))
         {
-            tvDisplay.ShowImage(displayImage);
+            ExamItem examItem = other.GetComponent<ExamItem>();
+            if (examItem != null)
+            {
+                string objectID = examItem.objectID;
+                Debug.Log($"Instrumento '{objectID}' foi usado.");
+                PhysicalExamManager examManager = FindObjectOfType<PhysicalExamManager>();
+                if (examManager != null)
+                {
+                    examManager.RegisterExamItem(objectID);
+                }
+                tvDisplay.ShowImage(displayImage);
+            }
         }
     }
 

@@ -104,6 +104,7 @@ public class AnamnesisManager : MonoBehaviour
 
         bool acertou = (chosen == q.correctOptionIndex);
         int pointsToApply = scoreManager.GetPointsForAnamnesis(q.prompt, acertou);
+        Debug.Log($"AVALIANDO PERGUNTA SELECIONADA: ID='{q.prompt}', Acertou?={acertou}, Pontos Aplicados={pointsToApply}");
 
         scoreManager.RegisterScoreEntry(new ScoreEntry {
             category      = ScoreCategory.Anamnese,
