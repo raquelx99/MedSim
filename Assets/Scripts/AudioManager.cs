@@ -3,11 +3,11 @@ using System;
 using UnityEngine;
 
 [System.Serializable]
-public class Sound : MonoBehaviour
+public class AudioManager : MonoBehaviour
 {
     public AudioSource source;
 
-    void Play(AudioClip clip)
+    public void Play(AudioClip clip)
     {
         if (source.isPlaying)
             source.Stop();

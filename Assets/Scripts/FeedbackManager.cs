@@ -19,15 +19,43 @@ public class FeedbackManager : MonoBehaviour
     public ScoreManager scoreManager;
     public PhaseManager phaseManager;
 
-    int currentPage = 0;
-    const int totalPages = 5;
+    private int currentPage = 0;
+    private List<(string title, string content)> pages = new List<(string, string)>();
 
     public void ShowFeedback()
     {
         feedbackPanel.SetActive(true);
         currentPage = 0;
         retryButton.gameObject.SetActive(false);
-        UpdatePage();
+
+        pages.Clear();
+
+        var entries = scoreManager.GetAllEntries().ToList();
+        float finalScore = scoreManager.GetCurrentTotalPoints();
+
+        pages.Add(("Pontuação Final", $"Pontuação: {finalScore:F0}"));
+
+        var hitsByCat = entries
+            .Where(e => e.isCorrect)
+            .GroupBy(e => e.category)
+            .Select(g => $"{g.Key}: {g.Count()} acertos");
+        pages.Add(("Acertos", string.Join("\n", hitsByCat)));
+
+        var errorsByCat = entries
+            .Where(e => !e.isCorrect)
+            .GroupBy(e => e.category);
+
+        foreach (var group in errorsByCat)
+        {
+            var sb = new StringBuilder();
+            foreach (var e in group)
+                sb.AppendLine($"- \"{e.actionID}\": {e.justification}");
+            pages.Add(($"Erros - {group.Key}", sb.ToString()));
+        }
+
+        pages.Add(("Análise Clínica", GenerateAnalysis(entries)));
+
+        pages.Add(("Dicas para Melhorar", GenerateTips(entries)));
 
         nextButton.onClick.RemoveAllListeners();
         prevButton.onClick.RemoveAllListeners();
@@ -40,11 +68,13 @@ public class FeedbackManager : MonoBehaviour
             feedbackPanel.SetActive(false);
             phaseManager.RestartPhase();
         });
+
+        UpdatePage();
     }
 
     void OnNext()
     {
-        if (currentPage < totalPages - 1)
+        if (currentPage < pages.Count - 1)
         {
             currentPage++;
             UpdatePage();
@@ -62,61 +92,14 @@ public class FeedbackManager : MonoBehaviour
 
     void UpdatePage()
     {
-        // controle de visibilidade dos botões
         prevButton.gameObject.SetActive(currentPage > 0);
-        nextButton.gameObject.SetActive(currentPage < totalPages - 1);
-        retryButton.gameObject.SetActive(currentPage == totalPages - 1);
+        nextButton.gameObject.SetActive(currentPage < pages.Count - 1);
+        retryButton.gameObject.SetActive(currentPage == pages.Count - 1);
 
-        // prepara os dados comuns
-        var entries = scoreManager.GetAllEntries();
-        var diagEntry = entries.LastOrDefault(e => e.category == ScoreCategory.Diagnosis);
-        bool diagCorrect = diagEntry != null && diagEntry.isCorrect;
-        float finalScore = scoreManager.GetCurrentTotalPoints();
-
-        switch (currentPage)
-        {
-            case 0:
-                titleText.text = "Pontuação Final";
-                contentText.text = $"Pontuação: {finalScore:F0}";
-                break;
-
-            case 1:
-                titleText.text = "Acertos";
-                var hitsByCat = entries
-                    .Where(e => e.isCorrect)
-                    .GroupBy(e => e.category)
-                    .Select(g => $"{g.Key}: {g.Count()} acertos");
-                contentText.text = string.Join("\n", hitsByCat);
-                break;
-
-            case 2:
-                titleText.text = "Erros";
-                var missesByCat = entries
-                    .Where(e => !e.isCorrect)
-                    .Select(e => $"- [{e.category}] \"{e.actionID}\": {e.justification}");
-                contentText.text = string.Join("\n", missesByCat);
-                break;
-
-            case 3:
-                titleText.text = "Análise Clínica";
-                contentText.text =
-                    "O paciente apresentou sintomas inespecíficos (tontura, cefaleia),\n" +
-                    "e a confirmação só ocorreu após exame físico correto.\n" +
-                    "Erros em solicitações de exames indicam necessidade de focar\n" +
-                    "no raciocínio clínico antes de pedir recursos adicionais.";
-                break;
-
-            case 4:
-                titleText.text = "Dicas para Melhorar";
-                contentText.text =
-                    "- Revise sempre o histórico completo do paciente antes de solicitar exames.\n" +
-                    "- Pratique fluxogramas de decisão diagnóstica.\n" +
-                    "- Treine a comunicação empática para obter informações mais precisas.\n" +
-                    "- Use casos clínicos simulados para reforçar o raciocínio.";
-                break;
-        }
+        titleText.text = pages[currentPage].title;
+        contentText.text = pages[currentPage].content;
     }
-    
+
     private string GenerateAnalysis(List<ScoreEntry> entries)
     {
         var errors = entries.Where(e => !e.isCorrect).ToList();

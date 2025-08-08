@@ -1889,8 +1889,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 922141995}
   m_HandleRect: {fileID: 922141994}
   m_Direction: 2
-  m_Value: -0.026541596
-  m_Size: 0.876246
+  m_Value: -0.000039212275
+  m_Size: 0.94033295
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2444,7 +2444,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 18.375137}
+  m_AnchoredPosition: {x: 0, y: 17.900381}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &375791017
@@ -4590,7 +4590,7 @@ MonoBehaviour:
   - {fileID: 1991006201}
   - {fileID: 1651156208}
   scoreManager: {fileID: 308785090}
-  audioSource: {fileID: 1948582370}
+  audioManager: {fileID: 1835191454}
 --- !u!4 &709833042
 Transform:
   m_ObjectHideFlags: 0

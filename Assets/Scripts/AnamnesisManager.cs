@@ -15,7 +15,9 @@ public class AnamnesisManager : MonoBehaviour
     public Button[] optionButtons;                 
     public TextMeshProUGUI[] optionTexts;
     public ScoreManager scoreManager;
-    public AudioSource audioSource;
+    
+    [Header("Áudio")]
+    public AudioManager audioManager;
 
     private int dialogueIndex = 0;
     private int questionIndex = 0;
@@ -47,7 +49,7 @@ public class AnamnesisManager : MonoBehaviour
         var dlg = dialogueSteps[dialogueIndex];
 
         if (dlg.npcLineClip != null)
-            audioSource.PlayOneShot(dlg.npcLineClip);
+            audioManager.Play(dlg.npcLineClip);
 
         optionTexts[0].text = dlg.playerPrompt;
 
@@ -60,7 +62,7 @@ public class AnamnesisManager : MonoBehaviour
         var dlg = dialogueSteps[dialogueIndex];
 
         if (dlg.npcResponseClip != null)
-            audioSource.PlayOneShot(dlg.npcResponseClip);
+            audioManager.Play(dlg.npcResponseClip);
 
         dialogueIndex++;
 
@@ -99,7 +101,7 @@ public class AnamnesisManager : MonoBehaviour
         if (clips != null && clips.Length > 0)
         {
             AudioClip clip = clips[Random.Range(0, clips.Length)];
-            audioSource.PlayOneShot(clip);
+            audioManager.Play(clip);
         }
 
         bool acertou = (chosen == q.correctOptionIndex);
