@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d295674b387f60f49bd0dc4de3c83ee8, type: 3}
+  m_Name: "2.Dimens\xE3o F\xEDsica"
+  m_EditorClassIdentifier: 
+  prompt: 
+  options:
+  - "Entendo. Pode me contar mais sobre essa dor de cabe\xE7a? Como ela \xE9 e onde
+    o senhor a sente?"
+  - "Certo. E sobre seus h\xE1bitos, o senhor costuma fumar?"
+  correctOptionIndex: 0
+  patientResponses:
+  - responseClips:
+    - {fileID: 8300000, guid: 2c2277a4beea40c489ba799ec086c109, type: 3}
+  - responseClips:
+    - {fileID: 8300000, guid: 4dc92d0db0159b741a6fa901dd442467, type: 3}
+  wrongJustification: 

@@ -55,16 +55,14 @@ public class FeedbackManager : MonoBehaviour
 
         metricsDetailText.text = sb.ToString();
 
-        // 3. Análise Clínica
-        // Você pode gerar dinamicamente com base nas principais falhas,
-        // ou usar um texto genérico predefinido:
+        // alterar pra ser dinamico dps
         analysisText.text =
             "O paciente apresentou sintomas inespecíficos (tontura, cefaleia),\n" +
             "e a confirmação só ocorreu após exame físico correto.\n" +
             "Erros em solicitações de exames indicam necessidade de focar\n" +
             "no raciocínio clínico antes de pedir recursos adicionais.";
 
-        // 5. Botões
+
         retryButton.onClick.RemoveAllListeners();
         retryButton.onClick.AddListener(() => {
             feedbackPanel.SetActive(false);

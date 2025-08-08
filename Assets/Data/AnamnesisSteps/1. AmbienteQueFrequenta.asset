@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f66b472ab7401eb4ea69590ca069d6dd, type: 3}
   m_Name: 1. AmbienteQueFrequenta
   m_EditorClassIdentifier: 
-  npcLine: Tenho 35 anos. Sou engenheiro civil
+  npcLineClip: {fileID: 0}
   playerPrompt: "Que lugares voc\xEA frequenta?"
-  npcResponse: "Saio muito para beber depois do servi\xE7o"
+  npcResponseClip: {fileID: 8300000, guid: d74ab23bd7cb730498771675acab046f, type: 3}

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f66b472ab7401eb4ea69590ca069d6dd, type: 3}
   m_Name: 1. IdadeProfissao
   m_EditorClassIdentifier: 
-  npcLine: Arnaldinho. Prazer
+  npcLineClip: {fileID: 0}
   playerPrompt: "Prazer! Quantos anos voc\xEA tem? Faz o que  da vida?"
-  npcResponse: 
+  npcResponseClip: {fileID: 8300000, guid: ac201dbda40ea3d4898d4356288df200, type: 3}

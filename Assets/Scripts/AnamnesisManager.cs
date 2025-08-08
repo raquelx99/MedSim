@@ -59,7 +59,6 @@ public class AnamnesisManager : MonoBehaviour
     {
         var dlg = dialogueSteps[dialogueIndex];
 
-        // toca a resposta fixa do NPC
         if (dlg.npcResponseClip != null)
             audioSource.PlayOneShot(dlg.npcResponseClip);
 

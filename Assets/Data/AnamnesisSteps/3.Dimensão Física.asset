@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f66b472ab7401eb4ea69590ca069d6dd, type: 3}
-  m_Name: 1. Cumprimento
+  m_Script: {fileID: 11500000, guid: 528bcab7b92d3a34685d31ee352c3f67, type: 3}
+  m_Name: "3.Dimens\xE3o F\xEDsica"
   m_EditorClassIdentifier: 
-  npcLineClip: {fileID: 0}
-  playerPrompt: Bom dia! Qual seu nome?
-  npcResponseClip: {fileID: 8300000, guid: 734cc5cfe472c9241999207c45ce6294, type: 3}
+  stepName: "Fazer o hist\xF3rico dos sintomas atuais"
+  question: {fileID: 11400000, guid: a69d0de77f0a34e4ca577eff5c6eac2e, type: 2}

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d295674b387f60f49bd0dc4de3c83ee8, type: 3}
+  m_Name: "5.Antecedentes M\xE9dicos"
+  m_EditorClassIdentifier: 
+  prompt: 
+  options:
+  - "Certo. E suas articula\xE7\xF5es, tem sentido dor nos joelhos, ombros ou em
+    outro lugar?"
+  - "Vamos cuidar disso. Agora, saindo um pouco do quadro atual, o senhor tem alguma
+    outra doen\xE7a que j\xE1 acompanha, como diabetes ou colesterol alto?"
+  correctOptionIndex: 1
+  patientResponses:
+  - responseClips:
+    - {fileID: 8300000, guid: 652839769ee0998438398d74ca7bc00f, type: 3}
+  - responseClips:
+    - {fileID: 8300000, guid: 36c180e8855da3740a208567b421fd5a, type: 3}
+  wrongJustification: 
