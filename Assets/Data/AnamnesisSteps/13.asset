@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 528bcab7b92d3a34685d31ee352c3f67, type: 3}
   m_Name: 13
   m_EditorClassIdentifier: 
-  stepName: 
+  stepName: "Finaliza\xE7\xE3o"
   question: {fileID: 11400000, guid: 1e47c8b24d9c054448de59440c5cb241, type: 2}

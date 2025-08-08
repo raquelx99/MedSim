@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 528bcab7b92d3a34685d31ee352c3f67, type: 3}
   m_Name: "6.Antecedentes M\xE9dicos"
   m_EditorClassIdentifier: 
-  stepName: "Entender os h\xE1bitos"
+  stepName: "Antecedentes M\xE9dicos"
   question: {fileID: 11400000, guid: 7f36b9b907e6204478ce8017c6d9673d, type: 2}

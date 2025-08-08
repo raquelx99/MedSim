@@ -23,4 +23,5 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 1920ec5715de1114dae7fcc80fd4798d, type: 3}
   - responseClips:
     - {fileID: 8300000, guid: c77a4994df384d24c893fae4dcfc73d3, type: 3}
-  wrongJustification: 
+  wrongJustification: "Esta \xE9 uma quebra de ordem por retrocesso. A pergunta sobre
+    alergias faz parte dos Antecedentes Patol\xF3gicos."

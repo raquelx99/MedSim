@@ -23,4 +23,5 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 3ccd067e0838efa44bad5282a0950bc0, type: 3}
   - responseClips:
     - {fileID: 8300000, guid: b0063c5b774ba254680a74ebb0bd26ae, type: 3}
-  wrongJustification: 
+  wrongJustification: "A pergunta sobre as condi\xE7\xF5es de moradia faz parte das
+    Condi\xE7\xF5es Socioecon\xF4micas."

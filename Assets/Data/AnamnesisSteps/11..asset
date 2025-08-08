@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 528bcab7b92d3a34685d31ee352c3f67, type: 3}
   m_Name: 11.
   m_EditorClassIdentifier: 
-  stepName: 
+  stepName: "Dimens\xE3o Social"
   question: {fileID: 11400000, guid: a45be4eda7ce4f94b8bd236f461313d4, type: 2}

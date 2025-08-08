@@ -24,4 +24,6 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 25c76f4d55944c241a20bca9a5467a2d, type: 3}
   - responseClips:
     - {fileID: 8300000, guid: bd31f2d58c7d5414495df183cd359e82, type: 3}
-  wrongJustification: 
+  wrongJustification: "A pergunta sobre f\xE9 pertence \xE0 Dimens\xE3o Espiritual,
+    que geralmente \xE9 abordada junto com a Dimens\xE3o Social. A etapa atual deveria
+    explorar h\xE1bitos como alimenta\xE7\xE3o e atividade f\xEDsica."

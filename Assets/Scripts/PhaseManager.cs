@@ -3,10 +3,13 @@ using System.Linq;
 using TMPro;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using UnityEditor.SearchService;
+using UnityEngine.SceneManagement;
 
 public class PhaseManager : MonoBehaviour
 {
     public static PhaseManager Instance { get; private set; }
+    private SceneManager sceneManager;
 
     public PatientPhaseSO phaseData;
     public ScoreManager scoreManager;
@@ -100,16 +103,10 @@ public class PhaseManager : MonoBehaviour
         feedbackManager.ShowFeedback();
         Debug.Log($"Fim da fase.\n{summary}");
     }
-    
+
     public void RestartPhase()
     {
-        currentPart = Part.Anamnese;
-        StartAnamnese();
-        scoreManager.ResetScores();
-        labOrderManager.ResetOrders();
-        diagnosisManager.ResetDiagnosis();
-        pranchetaButton.gameObject.SetActive(false);
-        uIPedidoExames.SetActive(false);
-        uIDiagnosis.SetActive(false);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+    
 }

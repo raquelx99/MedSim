@@ -23,4 +23,5 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 3dcf622ffc32a9e40812100b72d65c2b, type: 3}
   - responseClips:
     - {fileID: 8300000, guid: 18902bb55e0cbb740854c090b8095dde, type: 3}
-  wrongJustification: 
+  wrongJustification: "A pergunta sobre viagens pertence \xE0 Hist\xF3ria Epidemiol\xF3gica.
+    A etapa atual deveria explorar a rede de apoio do paciente."

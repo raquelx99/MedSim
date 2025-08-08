@@ -23,4 +23,6 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 0d929e86ad2d9524bbf21465675d21d8, type: 3}
   - responseClips:
     - {fileID: 8300000, guid: 5bcd40acfe04e1143ba1e99cc302927b, type: 3}
-  wrongJustification: 
+  wrongJustification: "A pergunta sobre o \"xixi\" \xE9 um item do Interrogat\xF3rio
+    por \xD3rg\xE3os e Aparelhos, do aparelho geniturin\xE1rio. A etapa atual deveria
+    explorar Antecedentes Familiares."

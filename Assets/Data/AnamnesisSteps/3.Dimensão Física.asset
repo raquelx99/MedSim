@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 528bcab7b92d3a34685d31ee352c3f67, type: 3}
   m_Name: "3.Dimens\xE3o F\xEDsica"
   m_EditorClassIdentifier: 
-  stepName: "Fazer o hist\xF3rico dos sintomas atuais"
+  stepName: "HDA - Dimens\xE3o F\xEDsica"
   question: {fileID: 11400000, guid: a69d0de77f0a34e4ca577eff5c6eac2e, type: 2}

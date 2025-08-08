@@ -23,4 +23,5 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 655d267161486d44c9e23cabf625e6f8, type: 3}
   - responseClips:
     - {fileID: 8300000, guid: cb397b4daaa0e454396cd6aada5f0710, type: 3}
-  wrongJustification: 
+  wrongJustification: "A pergunta sobre cirurgias pertence aos Antecedentes Patol\xF3gicos.
+    O correto \xE9 primeiro esgotar todos os detalhes da HDA."

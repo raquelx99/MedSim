@@ -25,4 +25,5 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 962a9557d77be2e4abbd27a159aa0e28, type: 3}
   - responseClips:
     - {fileID: 8300000, guid: c3bb854bd13769b419c0768abc85f7e5, type: 3}
-  wrongJustification: 
+  wrongJustification: "Uma boa consulta termina com um resumo claro e uma transi\xE7\xE3o
+    para a pr\xF3xima etapa (o exame f\xEDsico)."

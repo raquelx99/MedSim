@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 528bcab7b92d3a34685d31ee352c3f67, type: 3}
   m_Name: 8.
   m_EditorClassIdentifier: 
-  stepName: 
+  stepName: "Hist\xF3ria Familiar"
   question: {fileID: 11400000, guid: ff571f34fc31ba74fa308c7b150f8ca0, type: 2}

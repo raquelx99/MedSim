@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 528bcab7b92d3a34685d31ee352c3f67, type: 3}
   m_Name: "5. Dimens\xE3o Emocional"
   m_EditorClassIdentifier: 
-  stepName: "Resgatar o hist\xF3rico da fam\xEDlia"
+  stepName: "Dimens\xE3o Emocional"
   question: {fileID: 11400000, guid: 06640df6071accc42b083baf11cbf8b3, type: 2}

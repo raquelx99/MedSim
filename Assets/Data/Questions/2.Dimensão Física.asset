@@ -23,4 +23,6 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 2c2277a4beea40c489ba799ec086c109, type: 3}
   - responseClips:
     - {fileID: 8300000, guid: 4dc92d0db0159b741a6fa901dd442467, type: 3}
-  wrongJustification: 
+  wrongJustification: "Ap\xF3s a QP ser definida, a etapa seguinte \xE9 a Hist\xF3ria
+    da Doen\xE7a Atual (HDA), que deve explorar o sintoma em detalhes. A pergunta
+    sobre h\xE1bitos (fumar) pertence \xE0 se\xE7\xE3o de H\xE1bitos e V\xEDcios."

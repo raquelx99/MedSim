@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 528bcab7b92d3a34685d31ee352c3f67, type: 3}
   m_Name: "7.Uso de Medica\xE7\xF5es"
   m_EditorClassIdentifier: 
-  stepName: "Analisar par\xE2metros cl\xEDnicos"
+  stepName: "Uso de Medica\xE7\xF5es"
   question: {fileID: 11400000, guid: 08313e72bf6e67d45adcbb1fb2464efc, type: 2}

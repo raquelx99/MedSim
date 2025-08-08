@@ -24,4 +24,6 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 652839769ee0998438398d74ca7bc00f, type: 3}
   - responseClips:
     - {fileID: 8300000, guid: 36c180e8855da3740a208567b421fd5a, type: 3}
-  wrongJustification: 
+  wrongJustification: "A pergunta sobre dor nas articula\xE7\xF5es \xE9 um item do
+    Interrogat\xF3rio por \xD3rg\xE3os e Aparelhos (IOA), especificamente do sistema
+    osteoarticular. "

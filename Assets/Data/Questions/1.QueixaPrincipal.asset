@@ -22,4 +22,5 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 882343c3c831b7947acf3868bd82f08b, type: 3}
   - responseClips:
     - {fileID: 8300000, guid: ee9037952da35914f9e5e14f6581e9dc, type: 3}
-  wrongJustification: 
+  wrongJustification: "A anamnese deve, invariavelmente, come\xE7ar pela Queixa Principal
+    (QP) ou Motivo da Consulta."
