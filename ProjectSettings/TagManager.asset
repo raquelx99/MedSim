@@ -8,6 +8,7 @@ TagManager:
   - oximetro
   - oftalmoscopio
   - otoscopio
+  - estetoscopio
   layers:
   - Default
   - TransparentFX

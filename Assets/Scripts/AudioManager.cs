@@ -15,4 +15,12 @@ public class AudioManager : MonoBehaviour
         source.clip = clip;
         source.Play();
     }
+
+    public void Stop(AudioClip clip)
+    {
+        if (source.clip == clip && source.isPlaying)
+        {
+            source.Stop();
+        }
+    }
 }

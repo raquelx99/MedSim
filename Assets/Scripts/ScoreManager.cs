@@ -43,7 +43,7 @@ public class ScoreManager : MonoBehaviour
         {
             return isCorrect ? rule.correctPoints : -rule.incorrectPenalty;
         }
-        return isCorrect ? 20 : -2;
+        return isCorrect ? 20 : -5;
     }
 
     public int GetPointsForLabExam(string examID, bool isCorrect)
