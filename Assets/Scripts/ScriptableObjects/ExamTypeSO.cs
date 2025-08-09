@@ -7,8 +7,8 @@ public class ExamTypeSO : ScriptableObject
     public string examName;
 
     public bool isImaging;
-    public string defaultNormalResultText;
-    public string defaultAbnormalResultText;
+    public Sprite[] defaultNormalResult;
+    public Sprite[] defaultAbnormalResult;
 
     public Sprite normalImageResult;
     public Sprite abnormalImageResult;

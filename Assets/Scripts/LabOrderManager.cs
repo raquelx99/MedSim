@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine.UI;
 using Unity.VisualScripting;
 using System.Collections;
+using System.Linq;
 
 public class LabOrderManager : MonoBehaviour
 {
@@ -16,10 +17,18 @@ public class LabOrderManager : MonoBehaviour
     public Transform resultButtonContainer;
     public GameObject resultButtonPrefab;
     public Transform resultContainer;
+
+    public Image tabletImage;
+    public Button tabletNextButton;
+    public Button tabletPrevButton;
+
     public TextMeshProUGUI resultText;
     public GameObject togglePrefab;
     public Transform toggleGrid;
     public NegatoscopeDisplay negatoscope;
+
+    private List<Sprite> currentResultPages = new List<Sprite>();
+    private int currentResultPageIndex = 0;
 
     void Start()
     {
@@ -112,9 +121,13 @@ public class LabOrderManager : MonoBehaviour
         foreach (Transform child in resultButtonContainer)
             Destroy(child.gameObject);
 
-        foreach (string examID in selectedLabs)
+        // usar uma cópia da coleção para manter ordem estável (opcional)
+        var labsList = selectedLabs.ToList();
+
+        foreach (string examID in labsList)
         {
             var resultData = GetResultDataForExam(examID);
+            if (resultData == null) continue;
 
             GameObject btn = Instantiate(resultButtonPrefab, resultButtonContainer);
             Button button = btn.GetComponent<Button>();
@@ -128,7 +141,6 @@ public class LabOrderManager : MonoBehaviour
             });
 
             button.gameObject.SetActive(true);
-
         }
     }
 
@@ -144,28 +156,132 @@ public class LabOrderManager : MonoBehaviour
     void ShowSingleResult(PhaseExamResult result)
     {
         resultContainer.gameObject.SetActive(true);
+        tabletImage.gameObject.SetActive(false);
+
+        // limpa viewer anterior
+        ClearTabletPages();
 
         if (result.examType.isImaging)
         {
+            // imagem única no negatoscópio (com a mensagem informando)
             var sprite = result.isAbnormal ?
-            result.examType.abnormalImageResult :
-            result.examType.normalImageResult;
+                result.examType.abnormalImageResult :
+                result.examType.normalImageResult;
+
+            resultText.gameObject.SetActive(true);
             resultText.text = "Imagem aparecerá no negatoscópio.";
 
-            Debug.Log($"Exibindo imagem para o exame: {result.examType.examName}");
+            Debug.Log($"Exibindo imagem para o exame: {result.examType.examName} no negatoscópio");
 
             negatoscope.ShowImage(sprite);
+
+            // esconder viewer do tablet
+            HideTabletViewer();
         }
         else
         {
-            resultText.gameObject.SetActive(true);
+            tabletImage.color = Color.white;
+            tabletImage.gameObject.SetActive(true);
 
-            resultText.text = result.isAbnormal ?
-                result.examType.defaultAbnormalResultText :
-                result.examType.defaultNormalResultText;
+            // usa os arrays de sprites (padrão) para resultados não-imagem
+            Sprite[] pages = result.isAbnormal ?
+                result.examType.defaultAbnormalResult :
+                result.examType.defaultNormalResult;
+
+            if (pages != null && pages.Length > 0)
+            {
+                currentResultPages = pages.ToList();
+                currentResultPageIndex = 0;
+                UpdateTabletImage();
+                ShowTabletViewer();
+                resultText.gameObject.SetActive(false); // esconder texto quando temos imagens
+                Debug.Log($"Exibindo {currentResultPages.Count} páginas de resultados para o exame: {result.examType.examName}");
+            }
+            else
+            {
+                // fallback caso não haja sprites: mostra texto informativo
+                resultText.gameObject.SetActive(true);
+                resultText.text = "Resultado não disponível.";
+                HideTabletViewer();
+            }
+
+            // esconder negatoscópio caso estivesse visível
+            negatoscope.Hide();
         }
     }
-    
+
+    // ---------------- tablet paging ----------------
+
+    void HookTabletButtons()
+    {
+        if (tabletNextButton != null)
+        {
+            tabletNextButton.onClick.RemoveAllListeners();
+            tabletNextButton.onClick.AddListener(NextTabletPage);
+        }
+
+        if (tabletPrevButton != null)
+        {
+            tabletPrevButton.onClick.RemoveAllListeners();
+            tabletPrevButton.onClick.AddListener(PrevTabletPage);
+        }
+    }
+
+    void UpdateTabletImage()
+    {
+        if (tabletImage == null || currentResultPages == null || currentResultPages.Count == 0)
+            return;
+
+        tabletImage.gameObject.SetActive(true);
+        tabletImage.sprite = currentResultPages[currentResultPageIndex];
+
+        // atualiza estado dos botões
+        if (tabletPrevButton != null)
+            tabletPrevButton.gameObject.SetActive(currentResultPageIndex > 0);
+        if (tabletNextButton != null)
+            tabletNextButton.gameObject.SetActive(currentResultPageIndex < currentResultPages.Count - 1);
+    }
+
+    public void NextTabletPage()
+    {
+        if (currentResultPages == null || currentResultPages.Count == 0) return;
+        if (currentResultPageIndex < currentResultPages.Count - 1)
+        {
+            currentResultPageIndex++;
+            UpdateTabletImage();
+        }
+    }
+
+    public void PrevTabletPage()
+    {
+        if (currentResultPages == null || currentResultPages.Count == 0) return;
+        if (currentResultPageIndex > 0)
+        {
+            currentResultPageIndex--;
+            UpdateTabletImage();
+        }
+    }
+
+    void ClearTabletPages()
+    {
+        currentResultPages.Clear();
+        currentResultPageIndex = 0;
+    }
+
+    void ShowTabletViewer()
+    {
+        if (tabletImage != null) tabletImage.gameObject.SetActive(true);
+        if (tabletNextButton != null) tabletNextButton.gameObject.SetActive(true);
+        if (tabletPrevButton != null) tabletPrevButton.gameObject.SetActive(true);
+    }
+
+    void HideTabletViewer()
+    {
+        if (tabletImage != null) tabletImage.gameObject.SetActive(false);
+        if (tabletNextButton != null) tabletNextButton.gameObject.SetActive(false);
+        if (tabletPrevButton != null) tabletPrevButton.gameObject.SetActive(false);
+    }
+
     public void ResetOrders()
     {
         selectedLabs.Clear();
@@ -175,6 +291,8 @@ public class LabOrderManager : MonoBehaviour
         }
         resultContainer.gameObject.SetActive(false);
         negatoscope.Hide();
+        HideTabletViewer();
+        ClearTabletPages();
+        resultText.gameObject.SetActive(false);
     }
-
 }

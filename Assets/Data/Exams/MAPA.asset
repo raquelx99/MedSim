@@ -15,7 +15,11 @@ MonoBehaviour:
   examID: 2
   examName: MAPA
   isImaging: 0
-  defaultNormalResultText: Pressao normal
-  defaultAbnormalResultText: Pressao alta
+  defaultNormalResult: []
+  defaultAbnormalResult:
+  - {fileID: 21300000, guid: d869965347c6f7f4c8de6bfa61793f3c, type: 3}
+  - {fileID: 21300000, guid: d187610d447ebc543869d1117360a2d6, type: 3}
+  - {fileID: 21300000, guid: 308152efa27e31a408e894445ffb5b4b, type: 3}
+  - {fileID: 21300000, guid: 7f931c5c6a076674db71d402402d1ec2, type: 3}
   normalImageResult: {fileID: 0}
   abnormalImageResult: {fileID: 0}
