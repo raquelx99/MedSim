@@ -3159,7 +3159,7 @@ MonoBehaviour:
   tvDisplay: {fileID: 0}
   displayImage: {fileID: 0}
   audioManager: {fileID: 1835191454}
-  interactionSound: {fileID: 8300000, guid: 734cc5cfe472c9241999207c45ce6294, type: 3}
+  interactionSound: {fileID: 8300000, guid: 1d78ca86cf13e9e468a1c142bc763133, type: 3}
 --- !u!65 &528034923
 BoxCollider:
   m_ObjectHideFlags: 0
