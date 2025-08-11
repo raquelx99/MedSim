@@ -12,6 +12,9 @@ public class TransitionManager : MonoBehaviour
     public Button optionButton;
     public TextMeshProUGUI optionText;
 
+    [Header("Animation Elements")]
+    public Animator patientAnimator;
+
     [Header("Audio Elements")]
     public AudioSource audioSource;
     public AudioManager audioManager;
@@ -51,7 +54,15 @@ public class TransitionManager : MonoBehaviour
             Invoke(nameof(ShowDialogueStep), 0.5f);
         else
         {
+            worldSpaceCanvas.gameObject.SetActive(false);
             // todo aquele sistema de animação do paciente e transição para a próxima fase
         }
     }
+
+    void EndTransition()
+    {
+        worldSpaceCanvas.gameObject.SetActive(false);
+        // todo iniciar a próxima fase
+    }
+
 }
