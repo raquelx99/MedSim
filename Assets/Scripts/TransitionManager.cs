@@ -55,8 +55,20 @@ public class TransitionManager : MonoBehaviour
         else
         {
             worldSpaceCanvas.gameObject.SetActive(false);
-            // todo aquele sistema de animação do paciente e transição para a próxima fase
+
         }
+    }
+
+    IEnumerator PlayAnimationAndWait(string animationName, System.Action onComplete)
+    {
+        patientAnimator.Play(animationName);
+
+        AnimatorStateInfo stateInfo = patientAnimator.GetCurrentAnimatorStateInfo(0);
+        float duration = stateInfo.length;
+
+        yield return new WaitForSeconds(duration);
+
+        onComplete?.Invoke();
     }
 
     void EndTransition()
