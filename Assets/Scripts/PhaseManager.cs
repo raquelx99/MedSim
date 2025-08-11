@@ -78,6 +78,11 @@ public class PhaseManager : MonoBehaviour
         Debug.Log("Fase de pedidos de exames iniciada.");
     }
 
+    void StartTransitionPhase()
+    {
+        pranchetaText.text = "Fale com o paciente e informe os exames solicitados.";
+    }
+
     void StartDiagnosisPhase()
     {
         uIPedidoExames.SetActive(false);
