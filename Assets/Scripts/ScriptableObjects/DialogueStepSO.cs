@@ -11,4 +11,7 @@ public class DialogueStepSO : ScriptableObject
 
     [Header("Áudios do NPC em resposta ao jogador")]
     public AudioClip npcResponseClip;
+
+    [Header("Marcador transição")]
+    public bool requiresTransition;
 }

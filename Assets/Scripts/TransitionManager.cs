@@ -39,6 +39,12 @@ public class TransitionManager : MonoBehaviour
 
         optionButton.onClick.RemoveAllListeners();
         optionButton.onClick.AddListener(OnDialogueOption);
+
+        if (dlg.requiresTransition)
+        {
+            optionButton.interactable = false;
+            StartCoroutine(DialogueBreakSequence());
+        }
     }
 
     void OnDialogueOption()
@@ -54,27 +60,31 @@ public class TransitionManager : MonoBehaviour
             Invoke(nameof(ShowDialogueStep), 0.5f);
         else
         {
-            worldSpaceCanvas.gameObject.SetActive(false);
-
+            EndTransition();
         }
     }
 
-    IEnumerator PlayAnimationAndWait(string animationName, System.Action onComplete)
+    IEnumerator DialogueBreakSequence()
     {
-        patientAnimator.Play(animationName);
+        worldSpaceCanvas.gameObject.SetActive(false);
 
-        AnimatorStateInfo stateInfo = patientAnimator.GetCurrentAnimatorStateInfo(0);
-        float duration = stateInfo.length;
+        patientAnimator.Play("PacienteSai");
+        yield return new WaitForSeconds(patientAnimator.GetCurrentAnimatorStateInfo(0).length);
 
-        yield return new WaitForSeconds(duration);
+        audioSource.Play();
 
-        onComplete?.Invoke();
+        patientAnimator.Play("PacienteVolta");
+        yield return new WaitForSeconds(patientAnimator.GetCurrentAnimatorStateInfo(0).length);
+
+        worldSpaceCanvas.gameObject.SetActive(true);
+        optionButton.interactable = true;
+        ShowDialogueStep();
     }
 
     void EndTransition()
     {
         worldSpaceCanvas.gameObject.SetActive(false);
-        // todo iniciar a próxima fase
+        PhaseManager.Instance.FinishStep();
     }
 
 }
