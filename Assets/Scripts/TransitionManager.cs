@@ -1,7 +1,7 @@
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEngine;
 using UnityEngine.UI;
 
 public class TransitionManager : MonoBehaviour
@@ -12,8 +12,8 @@ public class TransitionManager : MonoBehaviour
     public Button optionButton;
     public TextMeshProUGUI optionText;
 
-    [Header("Animation Elements")]
-    public Animator patientAnimator;
+    [Header("Controladores")]
+    public PatientAnimationController patientAnimationController;
 
     [Header("Audio Elements")]
     public AudioSource audioSource;
@@ -23,13 +23,24 @@ public class TransitionManager : MonoBehaviour
 
     void Start()
     {
+        if (patientAnimationController == null)
+        {
+            Debug.LogError("A referência para PatientAnimationController não foi atribuída no TransitionManager!", this.gameObject);
+            this.enabled = false;
+            return;
+        }
         ShowDialogueStep();
     }
 
     void ShowDialogueStep()
     {
-        optionButton.gameObject.SetActive(true);
+        if (dialogueSteps == null || dialogueSteps.Count == 0 || dialogueIndex >= dialogueSteps.Count)
+        {
+            EndTransition();
+            return;
+        }
 
+        optionButton.gameObject.SetActive(true);
         var dlg = dialogueSteps[dialogueIndex];
 
         if (dlg.npcLineClip != null)
@@ -57,34 +68,41 @@ public class TransitionManager : MonoBehaviour
         dialogueIndex++;
 
         if (dialogueIndex < dialogueSteps.Count)
+        {
             Invoke(nameof(ShowDialogueStep), 0.5f);
+        }
         else
         {
-            EndTransition();
+            if(worldSpaceCanvas != null) worldSpaceCanvas.gameObject.SetActive(false);
+            patientAnimationController.StartExitAndReturnSequence();
         }
     }
-
+ 
     IEnumerator DialogueBreakSequence()
     {
         worldSpaceCanvas.gameObject.SetActive(false);
-
-        patientAnimator.Play("PacienteSai");
-        yield return new WaitForSeconds(patientAnimator.GetCurrentAnimatorStateInfo(0).length);
+        patientAnimationController.patientAnimator.Play("PacienteSai");
+        yield return new WaitForSeconds(patientAnimationController.patientAnimator.GetCurrentAnimatorStateInfo(0).length);
 
         audioSource.Play();
 
-        patientAnimator.Play("PacienteVolta");
-        yield return new WaitForSeconds(patientAnimator.GetCurrentAnimatorStateInfo(0).length);
+        patientAnimationController.patientAnimator.Play("PacienteVolta");
+        yield return new WaitForSeconds(patientAnimationController.patientAnimator.GetCurrentAnimatorStateInfo(0).length);
 
         worldSpaceCanvas.gameObject.SetActive(true);
         optionButton.interactable = true;
         ShowDialogueStep();
     }
+    
+    public void AnimationSequenceFinished()
+    {
+        Debug.Log("Sequência de animação finalizada. Chamando EndTransition.");
+        EndTransition();
+    }
 
     void EndTransition()
     {
-        worldSpaceCanvas.gameObject.SetActive(false);
-        PhaseManager.Instance.FinishStep();
+        if(worldSpaceCanvas != null) worldSpaceCanvas.gameObject.SetActive(false);
+        if(PhaseManager.Instance != null) PhaseManager.Instance.FinishStep();
     }
-
 }

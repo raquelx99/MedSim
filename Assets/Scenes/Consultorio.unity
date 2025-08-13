@@ -2268,6 +2268,37 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1 &358656497
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 358656498}
+  m_Layer: 0
+  m_Name: PontoInicio
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &358656498
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 358656497}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.776, y: 0.1, z: 4.434}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 27
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &372578741
 GameObject:
   m_ObjectHideFlags: 0
@@ -2636,6 +2667,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Cosmic_retro_mesa_shelf_wall_2slot
+      objectReference: {fileID: 0}
+    - target: {fileID: 6139548687402891037, guid: 2dd688a158de87f438488c6ac3d50181,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 6809407092431859111, guid: 2dd688a158de87f438488c6ac3d50181,
         type: 3}
@@ -3248,6 +3284,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MesaExame
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d956af32bdccb4243a378c360f4e8172,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4245,6 +4286,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 671352392}
   m_CullTransparentMesh: 1
+--- !u!1 &675087177
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 675087178}
+  m_Layer: 0
+  m_Name: PontoDestino
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &675087178
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 675087177}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.061, y: 0.1, z: 0.346}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 28
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &685891490
 GameObject:
   m_ObjectHideFlags: 0
@@ -5960,6 +6032,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cosmic_retro_mesa_chair_comfy_orange
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9f4f18fb9048ada48bd2fd0f00301b34,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6535,6 +6612,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Cosmic_retro_mesa_dispenser_drink
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a20bc514c24e99e4297bb431972a367b,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8036,7 +8118,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 42f4f4e7cf05ec24684141cb5ff28650,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.146
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 42f4f4e7cf05ec24684141cb5ff28650,
         type: 3}
@@ -8088,6 +8170,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: paciente@Sitting
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 42f4f4e7cf05ec24684141cb5ff28650,
+        type: 3}
+      propertyPath: m_TagString
+      value: Patient
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5866666021909216657, guid: 42f4f4e7cf05ec24684141cb5ff28650, type: 3}
     m_RemovedGameObjects: []
@@ -8105,6 +8192,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1160684196}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 42f4f4e7cf05ec24684141cb5ff28650,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1160684197}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 42f4f4e7cf05ec24684141cb5ff28650,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1160684198}
   m_SourcePrefab: {fileID: 100100000, guid: 42f4f4e7cf05ec24684141cb5ff28650, type: 3}
 --- !u!1 &1139970846
 GameObject:
@@ -8374,6 +8469,45 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.28, y: 0.8, z: 0.28}
   m_Center: {x: 0, y: 0.9, z: -0.14}
+--- !u!195 &1160684197
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1160684189}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.4
+  m_Speed: 2
+  m_Acceleration: 7
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1.9
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &1160684198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1160684189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfa9630c17f9bf24e9d483179b28c6e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  patientAnimator: {fileID: 1160684192}
+  patientAgent: {fileID: 1160684197}
+  pontoIncioCaminhada: {fileID: 358656498}
+  pontoDestino: {fileID: 675087178}
+  tempoDeEsperaNoDestino: 3
 --- !u!1 &1168857683
 GameObject:
   m_ObjectHideFlags: 0
@@ -8596,6 +8730,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Cosmic_retro_mesa_books_set_a
+      objectReference: {fileID: 0}
+    - target: {fileID: 4013872764929490983, guid: 50beb1511eb269f45a78c378cc185250,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4395500798047197853, guid: 50beb1511eb269f45a78c378cc185250,
         type: 3}
@@ -9069,6 +9208,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Mesa
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3cf53a2cd21d1ae4c92383f9b300ccbd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9557,6 +9701,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sala
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: dfe4ec4a94b7a0943812fc94c996a3d3,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9769,6 +9918,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cosmic_retro_mesa_mug_black
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3f6652e03628cdf4d96acaa3e520e240,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9853,6 +10007,69 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1507055754}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1539310913
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1539310915}
+  - component: {fileID: 1539310914}
+  m_Layer: 0
+  m_Name: NavMeshSurface
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1539310914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1539310913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.06666667
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 23800000, guid: c8b3396c51a0d75449af55b43d1c842f, type: 2}
+  m_BuildHeightMesh: 0
+--- !u!4 &1539310915
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1539310913}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -6.597895, y: -1.8169563, z: 4.5420713}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 29
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1548202166 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6139548687402891037, guid: 2dd688a158de87f438488c6ac3d50181,
@@ -12537,7 +12754,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1964160252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12550,11 +12767,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 375349fb15188ae43a2a4ff80e1698a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueSteps: []
+  dialogueSteps:
+  - {fileID: 11400000, guid: cafdf8c232f5ceb44b9df1bc6fdea5c2, type: 2}
   worldSpaceCanvas: {fileID: 1932449238}
   optionButton: {fileID: 1735355702}
   optionText: {fileID: 1651156208}
-  patientAnimator: {fileID: 0}
+  patientAnimationController: {fileID: 1160684198}
   audioSource: {fileID: 1819408088}
   audioManager: {fileID: 1835191454}
 --- !u!4 &1964160253
@@ -12645,6 +12863,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: osmic_retro_mesa_tv_flat_wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 84b0e01391ba38e43af898a4711d3277,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13374,6 +13597,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Cosmic_retro_mesa_books_set_b
+      objectReference: {fileID: 0}
+    - target: {fileID: 300900534481118971, guid: f2ef2020063b0a0489eb5cceb5eed127,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 1109807306562387009, guid: f2ef2020063b0a0489eb5cceb5eed127,
         type: 3}

@@ -9,6 +9,7 @@ TagManager:
   - oftalmoscopio
   - otoscopio
   - estetoscopio
+  - Patient
   layers:
   - Default
   - TransparentFX
