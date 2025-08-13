@@ -21,8 +21,15 @@ public class TransitionManager : MonoBehaviour
 
     private int dialogueIndex = 0;
 
+    public void Init()
+    {
+        worldSpaceCanvas.gameObject.SetActive(true);
+    }
+
     void Start()
     {
+        Debug.Log("Entrou na transição");
+
         if (patientAnimationController == null)
         {
             Debug.LogError("A referência para PatientAnimationController não foi atribuída no TransitionManager!", this.gameObject);
@@ -34,8 +41,10 @@ public class TransitionManager : MonoBehaviour
 
     void ShowDialogueStep()
     {
+        Debug.Log("Começou o dialogo");
         if (dialogueSteps == null || dialogueSteps.Count == 0 || dialogueIndex >= dialogueSteps.Count)
         {
+            Debug.Log("parou a transição");
             EndTransition();
             return;
         }

@@ -14,9 +14,10 @@ public class PhaseManager : MonoBehaviour
     public PatientPhaseSO phaseData;
     public ScoreManager scoreManager;
     public LabOrderManager labOrderManager;
+    public TransitionManager transitionManager;
     public DiagnosisManager diagnosisManager;
 
-    public enum Part { Anamnese, Exam, Labs, Diagnosis }
+    public enum Part { Anamnese, Exam, Labs, Transition, Diagnosis }
     public Part currentPart { get; private set; } = Part.Anamnese;
 
     public TextMeshProUGUI pranchetaText;
@@ -46,6 +47,7 @@ public class PhaseManager : MonoBehaviour
         {
             case Part.Exam: StartExamPhase(); break;
             case Part.Labs: StartLabsPhase(); break;
+            case Part.Transition: StartTransitionPhase(); break;
             case Part.Diagnosis: StartDiagnosisPhase(); break;
             case Part.Diagnosis + 1: FinishPhase(); break;
         }
@@ -80,7 +82,10 @@ public class PhaseManager : MonoBehaviour
 
     void StartTransitionPhase()
     {
+        uIPedidoExames.SetActive(false);
         pranchetaText.text = "Fale com o paciente e informe os exames solicitados.";
+        labOrderManager.gameObject.SetActive(false);
+        transitionManager.gameObject.SetActive(true);
     }
 
     void StartDiagnosisPhase()

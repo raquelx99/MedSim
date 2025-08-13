@@ -2144,6 +2144,7 @@ MonoBehaviour:
   phaseData: {fileID: 11400000, guid: 8621d04da9dfd8e4aa2045055ce5e1fa, type: 2}
   scoreManager: {fileID: 308785090}
   labOrderManager: {fileID: 1139970847}
+  transitionManager: {fileID: 1964160252}
   diagnosisManager: {fileID: 654195456}
   pranchetaText: {fileID: 1808098878}
   pranchetaButton: {fileID: 1269636846}
@@ -12754,7 +12755,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1964160252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12768,7 +12769,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogueSteps:
-  - {fileID: 11400000, guid: cafdf8c232f5ceb44b9df1bc6fdea5c2, type: 2}
+  - {fileID: 11400000, guid: 3c57477fed8b3aa48a4e7b9352fafbe9, type: 2}
+  - {fileID: 11400000, guid: 749253fd39121954389feaf7a6d3d882, type: 2}
   worldSpaceCanvas: {fileID: 1932449238}
   optionButton: {fileID: 1735355702}
   optionText: {fileID: 1651156208}
