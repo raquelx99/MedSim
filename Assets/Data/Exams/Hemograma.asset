@@ -15,7 +15,8 @@ MonoBehaviour:
   examID: 1
   examName: Hemograma Completo
   isImaging: 0
-  defaultNormalResultText: Tudo normal
-  defaultAbnormalResultText: Colesterol alto
+  defaultNormalResult: []
+  defaultAbnormalResult:
+  - {fileID: 21300000, guid: d197d9aecdda94a4da7ee0ad4b403a02, type: 3}
   normalImageResult: {fileID: 0}
   abnormalImageResult: {fileID: 0}
