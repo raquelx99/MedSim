@@ -9,7 +9,7 @@ public class TransitionManager : MonoBehaviour
     [Header("UI Elements")]
     public List<DialogueStepSO> dialogueSteps;
     public Canvas worldSpaceCanvas;
-    public Button optionButton;
+    public Button[] optionButtons;
     public TextMeshProUGUI optionText;
 
     [Header("Controladores")]
@@ -21,13 +21,11 @@ public class TransitionManager : MonoBehaviour
 
     private int dialogueIndex = 0;
 
-    public void Init()
-    {
-        worldSpaceCanvas.gameObject.SetActive(true);
-    }
-
     void Start()
     {
+        worldSpaceCanvas.gameObject.SetActive(true);
+        optionButtons[1].gameObject.SetActive(false);
+
         Debug.Log("Entrou na transição");
 
         if (patientAnimationController == null)
@@ -49,7 +47,7 @@ public class TransitionManager : MonoBehaviour
             return;
         }
 
-        optionButton.gameObject.SetActive(true);
+        optionButtons[0].gameObject.SetActive(true);
         var dlg = dialogueSteps[dialogueIndex];
 
         if (dlg.npcLineClip != null)
@@ -57,14 +55,10 @@ public class TransitionManager : MonoBehaviour
 
         optionText.text = dlg.playerPrompt;
 
-        optionButton.onClick.RemoveAllListeners();
-        optionButton.onClick.AddListener(OnDialogueOption);
+        optionButtons[0].onClick.RemoveAllListeners();
+        optionButtons[0].onClick.AddListener(OnDialogueOption);
 
-        if (dlg.requiresTransition)
-        {
-            optionButton.interactable = false;
-            StartCoroutine(DialogueBreakSequence());
-        }
+        optionButtons[0].interactable = true;
     }
 
     void OnDialogueOption()
@@ -74,6 +68,14 @@ public class TransitionManager : MonoBehaviour
         if (dlg.npcResponseClip != null)
             audioManager.Play(dlg.npcResponseClip);
 
+        if (dlg.requiresTransition)
+        {
+            worldSpaceCanvas.gameObject.SetActive(false);
+            patientAnimationController.StartExitAndReturnSequence();
+            dialogueIndex++;
+            return;
+        }
+
         dialogueIndex++;
 
         if (dialogueIndex < dialogueSteps.Count)
@@ -82,31 +84,17 @@ public class TransitionManager : MonoBehaviour
         }
         else
         {
-            if(worldSpaceCanvas != null) worldSpaceCanvas.gameObject.SetActive(false);
-            patientAnimationController.StartExitAndReturnSequence();
+            EndTransition();
         }
-    }
- 
-    IEnumerator DialogueBreakSequence()
-    {
-        worldSpaceCanvas.gameObject.SetActive(false);
-        patientAnimationController.patientAnimator.Play("PacienteSai");
-        yield return new WaitForSeconds(patientAnimationController.patientAnimator.GetCurrentAnimatorStateInfo(0).length);
-
-        audioSource.Play();
-
-        patientAnimationController.patientAnimator.Play("PacienteVolta");
-        yield return new WaitForSeconds(patientAnimationController.patientAnimator.GetCurrentAnimatorStateInfo(0).length);
-
-        worldSpaceCanvas.gameObject.SetActive(true);
-        optionButton.interactable = true;
-        ShowDialogueStep();
     }
     
     public void AnimationSequenceFinished()
     {
-        Debug.Log("Sequência de animação finalizada. Chamando EndTransition.");
-        EndTransition();
+        audioSource.Play();
+
+        worldSpaceCanvas.gameObject.SetActive(true);
+        optionButtons[0].interactable = true;
+        ShowDialogueStep();
     }
 
     void EndTransition()

@@ -12772,7 +12772,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3c57477fed8b3aa48a4e7b9352fafbe9, type: 2}
   - {fileID: 11400000, guid: 749253fd39121954389feaf7a6d3d882, type: 2}
   worldSpaceCanvas: {fileID: 1932449238}
-  optionButton: {fileID: 1735355702}
+  optionButtons:
+  - {fileID: 1735355702}
+  - {fileID: 830260770}
   optionText: {fileID: 1651156208}
   patientAnimationController: {fileID: 1160684198}
   audioSource: {fileID: 1819408088}
