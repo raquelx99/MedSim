@@ -110,13 +110,11 @@ public class LabOrderManager : MonoBehaviour
             }
         }
 
-        ShowResultsUI();
-
         PhaseManager.Instance.FinishStep();
 
     }
 
-    void ShowResultsUI()
+    public void ShowResultsUI()
     {
         foreach (Transform child in resultButtonContainer)
             Destroy(child.gameObject);

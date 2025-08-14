@@ -34,6 +34,7 @@ public class TransitionManager : MonoBehaviour
             this.enabled = false;
             return;
         }
+
         ShowDialogueStep();
     }
 
@@ -53,8 +54,9 @@ public class TransitionManager : MonoBehaviour
         if (dlg.npcLineClip != null)
             audioManager.Play(dlg.npcLineClip);
 
-        optionText.text = dlg.playerPrompt;
 
+        optionText.text = dlg.playerPrompt;
+        
         optionButtons[1].onClick.RemoveAllListeners();
         optionButtons[1].onClick.AddListener(OnDialogueOption);
 
@@ -90,8 +92,6 @@ public class TransitionManager : MonoBehaviour
     
     public void AnimationSequenceFinished()
     {
-        audioSource.Play();
-
         worldSpaceCanvas.gameObject.SetActive(true);
         optionButtons[1].interactable = true;
         ShowDialogueStep();
@@ -99,7 +99,8 @@ public class TransitionManager : MonoBehaviour
 
     void EndTransition()
     {
-        if(worldSpaceCanvas != null) worldSpaceCanvas.gameObject.SetActive(false);
+        audioSource.Play();
+        if (worldSpaceCanvas != null) worldSpaceCanvas.gameObject.SetActive(false);
         if(PhaseManager.Instance != null) PhaseManager.Instance.FinishStep();
     }
 }

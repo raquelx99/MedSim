@@ -9013,7 +9013,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.47450984, g: 0.5294118, b: 0.60784316, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -11180,6 +11180,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: XR Device Simulator
       objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -12819,7 +12824,7 @@ MonoBehaviour:
   optionButtons:
   - {fileID: 1735355702}
   - {fileID: 830260770}
-  optionText: {fileID: 1651156208}
+  optionText: {fileID: 1991006201}
   patientAnimationController: {fileID: 1160684198}
   audioSource: {fileID: 1819408088}
   audioManager: {fileID: 1835191454}

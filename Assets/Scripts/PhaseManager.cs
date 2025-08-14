@@ -84,12 +84,12 @@ public class PhaseManager : MonoBehaviour
     {
         uIPedidoExames.SetActive(false);
         pranchetaText.text = "Fale com o paciente e informe os exames solicitados.";
-        labOrderManager.gameObject.SetActive(false);
         transitionManager.gameObject.SetActive(true);
     }
 
     void StartDiagnosisPhase()
     {
+        labOrderManager.ShowResultsUI();
         uIPedidoExames.SetActive(false);
         pranchetaText.text = "Diagnóstico: Selecione o diagnóstico correto e confirme.";
         labOrderManager.gameObject.SetActive(false);
