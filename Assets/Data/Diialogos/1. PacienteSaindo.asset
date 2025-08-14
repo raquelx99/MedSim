@@ -15,5 +15,5 @@ MonoBehaviour:
   npcLineClip: {fileID: 0}
   playerPrompt: "Senhor Carlos, vou precisar que voc\xEA fa\xE7a esses exames aqui.
     Depois que fizer eles teremos nosso retorno."
-  npcResponseClip: {fileID: 0}
+  npcResponseClip: {fileID: 8300000, guid: b3298167c138c474c9b2f7164b385eaa, type: 3}
   requiresTransition: 1

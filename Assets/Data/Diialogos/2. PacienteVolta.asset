@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcLineClip: {fileID: 0}
   playerPrompt: "Ol\xE1, senhor Carlos! Veio para nosso retorno?"
-  npcResponseClip: {fileID: 0}
+  npcResponseClip: {fileID: 8300000, guid: 5fbe0d1f3ac175449b81c0bbbbf449c3, type: 3}
   requiresTransition: 0
