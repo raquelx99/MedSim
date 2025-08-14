@@ -24,7 +24,7 @@ public class TransitionManager : MonoBehaviour
     void Start()
     {
         worldSpaceCanvas.gameObject.SetActive(true);
-        optionButtons[1].gameObject.SetActive(false);
+        optionButtons[0].gameObject.SetActive(false);
 
         Debug.Log("Entrou na transição");
 
@@ -47,7 +47,7 @@ public class TransitionManager : MonoBehaviour
             return;
         }
 
-        optionButtons[0].gameObject.SetActive(true);
+        optionButtons[1].gameObject.SetActive(true);
         var dlg = dialogueSteps[dialogueIndex];
 
         if (dlg.npcLineClip != null)
@@ -55,10 +55,10 @@ public class TransitionManager : MonoBehaviour
 
         optionText.text = dlg.playerPrompt;
 
-        optionButtons[0].onClick.RemoveAllListeners();
-        optionButtons[0].onClick.AddListener(OnDialogueOption);
+        optionButtons[1].onClick.RemoveAllListeners();
+        optionButtons[1].onClick.AddListener(OnDialogueOption);
 
-        optionButtons[0].interactable = true;
+        optionButtons[1].interactable = true;
     }
 
     void OnDialogueOption()
@@ -93,7 +93,7 @@ public class TransitionManager : MonoBehaviour
         audioSource.Play();
 
         worldSpaceCanvas.gameObject.SetActive(true);
-        optionButtons[0].interactable = true;
+        optionButtons[1].interactable = true;
         ShowDialogueStep();
     }
 
