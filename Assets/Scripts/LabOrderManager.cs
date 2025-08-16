@@ -50,11 +50,26 @@ public class LabOrderManager : MonoBehaviour
             TextMeshProUGUI label = go.GetComponentInChildren<TextMeshProUGUI>();
             var currentExam = exam;
 
+            Image bg = toggle.GetComponent<Image>();
+
             toggle.onValueChanged.AddListener((isOn) =>
             {
-                if (isOn) selectedLabs.Add(currentExam.examType.examID);
-                else selectedLabs.Remove(currentExam.examType.examID);
+                if (isOn)
+            {
+                selectedLabs.Add(currentExam.examType.examID);
+                if (bg != null)
+                    bg.color = new Color32(0x22, 0x9C, 0xBE, 0xFF); // #229CBE
+            }
+            else
+            {
+                selectedLabs.Remove(currentExam.examType.examID);
+                if (bg != null)
+                    bg.color = Color.white;
+            }
             });
+
+            if (bg != null)
+            bg.color = toggle.isOn ? new Color32(0x22, 0x9C, 0xBE, 0xFF) : Color.white;
 
             label.text = exam.examType.examName;
             toggleDict[exam.examType.examID] = toggle;
