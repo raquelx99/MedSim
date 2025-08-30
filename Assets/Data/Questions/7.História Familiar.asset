@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d295674b387f60f49bd0dc4de3c83ee8, type: 3}
+  m_Name: "7.Hist\xF3ria Familiar"
+  m_EditorClassIdentifier: 
+  prompt: 7
+  options:
+  - "Certo. O senhor j\xE1 mencionou seu pai. Al\xE9m dele, sua m\xE3e ou seus irm\xE3os
+    t\xEAm alguma doen\xE7a importante?"
+  - "E o seu xixi? Tem feito mais vezes que o normal ou notou alguma mudan\xE7a na
+    cor?"
+  correctOptionIndex: 0
+  patientResponses:
+  - responseClips:
+    - {fileID: 8300000, guid: 25c76f4d55944c241a20bca9a5467a2d, type: 3}
+  - responseClips:
+    - {fileID: 8300000, guid: bd31f2d58c7d5414495df183cd359e82, type: 3}
+  wrongJustification: "A pergunta sobre f\xE9 pertence \xE0 Dimens\xE3o Espiritual,
+    que geralmente \xE9 abordada junto com a Dimens\xE3o Social. A etapa atual deveria
+    explorar h\xE1bitos como alimenta\xE7\xE3o e atividade f\xEDsica."

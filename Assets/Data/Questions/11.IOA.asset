@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d295674b387f60f49bd0dc4de3c83ee8, type: 3}
+  m_Name: 11.IOA
+  m_EditorClassIdentifier: 
+  prompt: 11
+  options:
+  - "Estamos quase acabando. Para garantir que n\xE3o esquecemos de nada, vou fazer
+    umas \xFAltimas perguntas r\xE1pidas. O senhor sentiu dor no peito, tosse, azia,
+    ou fraqueza muscular?"
+  - "Bem, parece que \xE9 um quadro de hipertens\xE3o. Vou pedir uns exames para
+    o senhor ir fazer."
+  correctOptionIndex: 0
+  patientResponses:
+  - responseClips:
+    - {fileID: 8300000, guid: b973e2d1a8a4594468382ace8870d798, type: 3}
+  - responseClips:
+    - {fileID: 8300000, guid: 39bb947cc102ae045a66a62ee7eef40a, type: 3}
+  wrongJustification: "Este \xE9 um erro de omiss\xE3o e precipita\xE7\xE3o. O jogador
+    est\xE1 pulando para uma conclus\xE3o diagn\xF3stica e um plano de a\xE7\xE3o
+    antes de finalizar a coleta de dados."

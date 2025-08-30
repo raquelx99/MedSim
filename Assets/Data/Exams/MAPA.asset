@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94b27b050a9a3d646be3aa748376c2fa, type: 3}
+  m_Name: MAPA
+  m_EditorClassIdentifier: 
+  examID: 2
+  examName: MAPA
+  isImaging: 0
+  defaultNormalResult: []
+  defaultAbnormalResult:
+  - {fileID: 21300000, guid: d869965347c6f7f4c8de6bfa61793f3c, type: 3}
+  - {fileID: 21300000, guid: d187610d447ebc543869d1117360a2d6, type: 3}
+  - {fileID: 21300000, guid: 308152efa27e31a408e894445ffb5b4b, type: 3}
+  - {fileID: 21300000, guid: 7f931c5c6a076674db71d402402d1ec2, type: 3}
+  normalImageResult: {fileID: 0}
+  abnormalImageResult: {fileID: 0}

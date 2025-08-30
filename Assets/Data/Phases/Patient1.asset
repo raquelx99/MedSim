@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 281111c104e1cf544aa53125a858a470, type: 3}
+  m_Name: Patient1
+  m_EditorClassIdentifier: 
+  phaseName: "Hipertens\xE3o arterial sist\xEAmica"
+  dialogueSteps:
+  - {fileID: 11400000, guid: 0dc8f142b32c66140965c751a97442ee, type: 2}
+  - {fileID: 11400000, guid: cb5e58977ed52564c9148d9c082d418e, type: 2}
+  - {fileID: 11400000, guid: cafdf8c232f5ceb44b9df1bc6fdea5c2, type: 2}
+  anamnesisSteps:
+  - {fileID: 11400000, guid: bc670f873d9cdfe46800082d7c56fba0, type: 2}
+  - {fileID: 11400000, guid: 256ad42bbfe1b494d8c51d0020f407a8, type: 2}
+  - {fileID: 11400000, guid: ef89798b39b339146ab59454bc06ab1b, type: 2}
+  - {fileID: 11400000, guid: 4a9d4d6f979d25e44ad408183e633aa3, type: 2}
+  - {fileID: 11400000, guid: 15f991d353cdc0a418d57d54d23deae3, type: 2}
+  - {fileID: 11400000, guid: 78690b6ea92be0341bc3f1270a9154b1, type: 2}
+  - {fileID: 11400000, guid: 4c6f81e96ec78b54d8aa311651eaa44a, type: 2}
+  - {fileID: 11400000, guid: 1e9dfd257f12cd042a7eda573d0d0dc6, type: 2}
+  - {fileID: 11400000, guid: 8acab72d4e9d24e41afb08b8b8d44b6d, type: 2}
+  - {fileID: 11400000, guid: 553a074e71dc79a47b1ad0f12fc15954, type: 2}
+  - {fileID: 11400000, guid: 8c3aab0b28d857f45922a33c78c3f235, type: 2}
+  - {fileID: 11400000, guid: d9f33a23f083250438dc0f5bef12a75a, type: 2}
+  requiredExamObjectIDs:
+  - esfigmomanometro
+  - oximetro
+  correctLabTestIDs:
+  - 1
+  - 2
+  examResults:
+  - examType: {fileID: 11400000, guid: 99202a97022490b4f8e0dfe4e846de9f, type: 2}
+    isAbnormal: 1
+  - examType: {fileID: 11400000, guid: b92e85175bc27014da04e4b76aa97d3d, type: 2}
+    isAbnormal: 1
+  - examType: {fileID: 11400000, guid: a2f847d3bbbeaf14581cd84f394222f3, type: 2}
+    isAbnormal: 0
+  possibleDiagnosis:
+  - "hipertens\xE3o"
+  - ansiedade
+  - "hipertens\xE3o endocrinologica"
+  correctDiagnosisIndex: 0

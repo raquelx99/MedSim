@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d295674b387f60f49bd0dc4de3c83ee8, type: 3}
+  m_Name: "10.Dimens\xE3oSocial"
+  m_EditorClassIdentifier: 
+  prompt: 10
+  options:
+  - "Certo. O senhor tem alguma f\xE9 ou cren\xE7a que lhe ajuda? E em casa, no trabalho,
+    o senhor tem uma boa rede de apoio? Algu\xE9m com quem contar?"
+  - "O senhor viajou para alguma \xE1rea de fazenda ou interior recentemente?"
+  correctOptionIndex: 0
+  patientResponses:
+  - responseClips:
+    - {fileID: 8300000, guid: 3dcf622ffc32a9e40812100b72d65c2b, type: 3}
+  - responseClips:
+    - {fileID: 8300000, guid: 18902bb55e0cbb740854c090b8095dde, type: 3}
+  wrongJustification: "A pergunta sobre viagens pertence \xE0 Hist\xF3ria Epidemiol\xF3gica.
+    A etapa atual deveria explorar a rede de apoio do paciente."

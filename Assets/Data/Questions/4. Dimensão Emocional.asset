@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d295674b387f60f49bd0dc4de3c83ee8, type: 3}
+  m_Name: "4. Dimens\xE3o Emocional"
+  m_EditorClassIdentifier: 
+  prompt: 4
+  options:
+  - "Entendo. \xC9 natural ficar preocupado com sua sa\xFAde. O que o senhor pensa
+    que pode estar acontecendo? Como tem se sentido emocionalmente?"
+  - "Entendi. E como \xE9 a sua casa? Tem \xE1gua encanada e rede de esgoto?"
+  correctOptionIndex: 0
+  patientResponses:
+  - responseClips:
+    - {fileID: 8300000, guid: 3ccd067e0838efa44bad5282a0950bc0, type: 3}
+  - responseClips:
+    - {fileID: 8300000, guid: b0063c5b774ba254680a74ebb0bd26ae, type: 3}
+  wrongJustification: "A pergunta sobre as condi\xE7\xF5es de moradia faz parte das
+    Condi\xE7\xF5es Socioecon\xF4micas."
