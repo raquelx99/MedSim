@@ -8641,6 +8641,7 @@ MonoBehaviour:
   patientAnimator: {fileID: 1160684192}
   patientAgent: {fileID: 1160684197}
   transitionManager: {fileID: 0}
+  anamnesisAudioSource: {fileID: 0}
   pontoIncioCaminhada: {fileID: 358656498}
   pontoDestino: {fileID: 675087178}
   tempoDeEsperaNoDestino: 3
@@ -13263,6 +13264,7 @@ MonoBehaviour:
   patientAnimator: {fileID: 1908161541}
   patientAgent: {fileID: 1908161543}
   transitionManager: {fileID: 1964160252}
+  anamnesisAudioSource: {fileID: 1948582370}
   pontoIncioCaminhada: {fileID: 358656498}
   pontoDestino: {fileID: 675087178}
   tempoDeEsperaNoDestino: 3
