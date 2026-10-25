@@ -26,7 +26,6 @@ public class SceneTransitionManager : MonoBehaviour
         fadeScreen.FadeOut();
         yield return new WaitForSeconds(fadeScreen.fadeDuration);
 
-        //Launch the new scene
         SceneManager.LoadScene(sceneIndex);
     }
 
@@ -38,7 +37,6 @@ public class SceneTransitionManager : MonoBehaviour
     IEnumerator GoToSceneAsyncRoutine(int sceneIndex)
     {
         fadeScreen.FadeOut();
-        //Launch the new scene
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex);
         operation.allowSceneActivation = false;
 

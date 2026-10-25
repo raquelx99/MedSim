@@ -8,7 +8,6 @@ public class SetTurnTypeFromPlayerPref : MonoBehaviour
     public ActionBasedSnapTurnProvider snapTurn;
     public ActionBasedContinuousTurnProvider continuousTurn;
 
-    // Start is called before the first frame update
     void Start()
     {
         ApplyPlayerPref();
