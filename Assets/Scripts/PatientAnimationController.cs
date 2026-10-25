@@ -10,10 +10,12 @@ public class PatientAnimationController : MonoBehaviour
     private static readonly int IsWalking = Animator.StringToHash("IsWalking");
     private static readonly int StartExit = Animator.StringToHash("IniciarSaida");
     private static readonly int StartSitting = Animator.StringToHash("IniciarSentar");
+    private static readonly int IsTalking = Animator.StringToHash("IsTalking");
 
     public Animator patientAnimator;
     public NavMeshAgent patientAgent;
     public TransitionManager transitionManager;
+    public AudioSource anamnesisAudioSource;
     public Transform pontoIncioCaminhada;
     public Transform pontoDestino;
     public float tempoDeEsperaNoDestino = 3.0f;
@@ -30,9 +32,16 @@ public class PatientAnimationController : MonoBehaviour
             patientAgent = GetComponent<NavMeshAgent>();
         if (transitionManager == null)
             transitionManager = FindObjectOfType<TransitionManager>();
-
         originalPosition = transform.position;
         originalRotation = transform.rotation;
+    }
+
+    void Update()
+    {
+        if (anamnesisAudioSource != null && patientAnimator != null)
+        {
+            patientAnimator.SetBool(IsTalking, anamnesisAudioSource.isPlaying);
+        }
     }
 
     void Start()
@@ -102,7 +111,7 @@ public class PatientAnimationController : MonoBehaviour
             return stateInfo.IsName("Walking") || stateInfo.IsName("walking");
 
         if (stateName.Equals("Sitting", System.StringComparison.OrdinalIgnoreCase))
-            return stateInfo.IsName("Sitting") || stateInfo.IsName("sitting_idle");
+            return stateInfo.IsName("Sitting") || stateInfo.IsName("sitting_idle") || stateInfo.IsName("sitting_idle_talking");
 
         return false;
     }
