@@ -1,68 +1,69 @@
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PhysicalExamManager : MonoBehaviour
 {
+    private const int OutOfPhasePenalty = -2;
+
     public PatientPhaseSO phaseData;
     public ScoreManager scoreManager;
-    private HashSet<string> usedObjectIDs = new();
+
+    private readonly HashSet<string> usedObjectIDs = new();
+
+    void OnEnable()
+    {
+        InstrumentEvents.InstrumentUsed += RegisterExamItem;
+    }
+
+    void OnDisable()
+    {
+        InstrumentEvents.InstrumentUsed -= RegisterExamItem;
+    }
+
+    void Start()
+    {
+        if (scoreManager == null && PhaseManager.Instance != null)
+            scoreManager = PhaseManager.Instance.scoreManager;
+        if (phaseData == null && PhaseManager.Instance != null)
+            phaseData = PhaseManager.Instance.phaseData;
+    }
 
     public void RegisterExamItem(string objectID)
     {
         if (PhaseManager.Instance.currentPart != PhaseManager.Part.Exam)
         {
-            scoreManager.RegisterScoreEntry(new ScoreEntry
-            {
-                category = ScoreCategory.PhysicalExam,
-                severity = ErrorSeverity.Moderado,
-                actionID = objectID,
-                isCorrect = false,
-                justification = "Tentativa de uso de objeto fora da fase de exame físico.",
-                points = -2
-            });
-            Debug.Log($"{objectID} usado fora da fase de exame físico : -2 pontos");
+            RegisterEntry(objectID, false, "Tentativa de uso de objeto fora da fase de exame físico.", OutOfPhasePenalty);
             return;
         }
 
-        if (usedObjectIDs.Contains(objectID)) return;
+        if (!usedObjectIDs.Add(objectID)) return;
 
-        usedObjectIDs.Add(objectID);
-
-        int pointsToApply = scoreManager.GetPointsForPhysicalExam(objectID, true);
-
-        scoreManager.RegisterScoreEntry(new ScoreEntry {
-            category = ScoreCategory.PhysicalExam,
-            severity = ErrorSeverity.Moderado,
-            actionID = objectID,
-            isCorrect = true,
-            points = pointsToApply
-        });
-
-        //Debug.Log(acertou ? $"Usou corretamente: {objectID}" : $"Usou incorretamente: {objectID}");
+        RegisterEntry(objectID, true, "", scoreManager.GetPointsForPhysicalExam(objectID, true));
     }
 
     public void FinishPhysicalExam()
     {
-        foreach (var req in phaseData.requiredExamObjectIDs)
+        foreach (string requiredID in phaseData.requiredExamObjectIDs)
         {
-            if (!usedObjectIDs.Contains(req))
-            {
-                int pointsToApply = scoreManager.GetPointsForPhysicalExam(req, false);
-                scoreManager.RegisterScoreEntry(new ScoreEntry
-                {
-                    category = ScoreCategory.PhysicalExam,
-                    severity = ErrorSeverity.Moderado,
-                    actionID = req,
-                    isCorrect = false,
-                    justification = "Instrumento essencial não foi utilizado.",
-                    points = pointsToApply
-                });
-            }
+            if (usedObjectIDs.Contains(requiredID)) continue;
+
+            RegisterEntry(requiredID, false, "Instrumento essencial não foi utilizado.",
+                scoreManager.GetPointsForPhysicalExam(requiredID, false));
         }
 
-        PhaseManager.Instance.FinishStep();
-        
+        PhaseEvents.RaiseStepFinished();
+    }
+
+    void RegisterEntry(string objectID, bool isCorrect, string justification, int points)
+    {
+        scoreManager.RegisterScoreEntry(new ScoreEntry
+        {
+            category = ScoreCategory.PhysicalExam,
+            severity = ErrorSeverity.Moderado,
+            actionID = objectID,
+            isCorrect = isCorrect,
+            justification = justification,
+            points = points
+        });
     }
 }

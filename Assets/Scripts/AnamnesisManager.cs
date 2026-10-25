@@ -1,28 +1,30 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;        
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class AnamnesisManager : MonoBehaviour
 {
-    [Header("Configuração")]
-    private List<DialogueStepSO> dialogueSteps;
-    private List<AnamnesisStepSO> questionSteps;
+    private const float NextDialogueDelay = 0.5f;
+    private const int QuestionOptionCount = 2;
 
     public Canvas worldSpaceCanvas;
     public TextMeshProUGUI npcText;
-    public Button[] optionButtons;                 
+    public Button[] optionButtons;
     public TextMeshProUGUI[] optionTexts;
     public ScoreManager scoreManager;
-    
-    [Header("Áudio")]
     public AudioManager audioManager;
 
-    private int dialogueIndex = 0;
-    private int questionIndex = 0;
-    private List<(string q, string justification)> wrongLog = new();
-    
+    private List<DialogueStepSO> dialogueSteps;
+    private List<AnamnesisStepSO> questionSteps;
+    private int dialogueIndex;
+    private int questionIndex;
+
+    void Start()
+    {
+        if (scoreManager == null && PhaseManager.Instance != null)
+            scoreManager = PhaseManager.Instance.scoreManager;
+    }
 
     public void Init(List<DialogueStepSO> dialogues, List<AnamnesisStepSO> questions)
     {
@@ -30,14 +32,8 @@ public class AnamnesisManager : MonoBehaviour
         questionSteps = questions;
         dialogueIndex = 0;
         questionIndex = 0;
-        wrongLog.Clear();
 
         worldSpaceCanvas.gameObject.SetActive(true);
-        ShowDialogueStep();
-    }
-
-    void Start()
-    {
         ShowDialogueStep();
     }
 
@@ -46,75 +42,60 @@ public class AnamnesisManager : MonoBehaviour
         optionButtons[0].gameObject.SetActive(true);
         optionButtons[1].gameObject.SetActive(false);
 
-        var dlg = dialogueSteps[dialogueIndex];
-
-        if (dlg.npcLineClip != null)
-            audioManager.Play(dlg.npcLineClip);
-
-        optionTexts[0].text = dlg.playerPrompt;
+        DialogueStepSO dialogue = dialogueSteps[dialogueIndex];
+        PlayClip(dialogue.npcLineClip);
+        optionTexts[0].text = dialogue.playerPrompt;
 
         optionButtons[0].onClick.RemoveAllListeners();
         optionButtons[0].onClick.AddListener(OnDialogueOption);
     }
 
-   void OnDialogueOption()
+    void OnDialogueOption()
     {
-        var dlg = dialogueSteps[dialogueIndex];
-
-        if (dlg.npcResponseClip != null)
-            audioManager.Play(dlg.npcResponseClip);
-
+        PlayClip(dialogueSteps[dialogueIndex].npcResponseClip);
         dialogueIndex++;
 
         if (dialogueIndex < dialogueSteps.Count)
-            Invoke(nameof(ShowDialogueStep), 0.5f);
-        else
         {
-            questionIndex = 0;
-            ShowQuestionStep();
+            Invoke(nameof(ShowDialogueStep), NextDialogueDelay);
+            return;
         }
+
+        questionIndex = 0;
+        ShowQuestionStep();
     }
 
     void ShowQuestionStep()
     {
+        foreach (Button button in optionButtons)
+            button.gameObject.SetActive(true);
 
-        optionButtons[0].gameObject.SetActive(true);
-        optionButtons[1].gameObject.SetActive(true);
+        QuestionSO question = questionSteps[questionIndex].question;
+        npcText.text = question.prompt;
 
-        var q = questionSteps[questionIndex].question;
-        npcText.text = q.prompt;
-
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < QuestionOptionCount; i++)
         {
-            optionTexts[i].text = q.options[i];
+            int optionIndex = i;
+            optionTexts[i].text = question.options[i];
             optionButtons[i].onClick.RemoveAllListeners();
-            int idx = i;
-            optionButtons[i].onClick.AddListener(() => OnQuestionSelected(idx));
+            optionButtons[i].onClick.AddListener(() => OnQuestionSelected(optionIndex));
         }
     }
 
-    void OnQuestionSelected(int chosen)
+    void OnQuestionSelected(int chosenIndex)
     {
-        var q = questionSteps[questionIndex].question;
+        QuestionSO question = questionSteps[questionIndex].question;
+        PlayRandomClip(question.patientResponses[chosenIndex].responseClips);
 
-        var clips = q.patientResponses[chosen].responseClips;
-        if (clips != null && clips.Length > 0)
+        bool isCorrect = chosenIndex == question.correctOptionIndex;
+        scoreManager.RegisterScoreEntry(new ScoreEntry
         {
-            AudioClip clip = clips[Random.Range(0, clips.Length)];
-            audioManager.Play(clip);
-        }
-
-        bool acertou = (chosen == q.correctOptionIndex);
-        int pointsToApply = scoreManager.GetPointsForAnamnesis(q.prompt, acertou);
-        Debug.Log($"AVALIANDO PERGUNTA SELECIONADA: ID='{q.prompt}', Acertou?={acertou}, Pontos Aplicados={pointsToApply}");
-
-        scoreManager.RegisterScoreEntry(new ScoreEntry {
-            category      = ScoreCategory.Anamnese,
-            severity      = acertou ? ErrorSeverity.Leve : ErrorSeverity.Moderado,
-            actionID      = q.prompt,
-            isCorrect     = acertou,
-            justification = acertou ? "" : q.wrongJustification,
-            points        = pointsToApply
+            category = ScoreCategory.Anamnese,
+            severity = isCorrect ? ErrorSeverity.Leve : ErrorSeverity.Moderado,
+            actionID = question.prompt,
+            isCorrect = isCorrect,
+            justification = isCorrect ? "" : question.wrongJustification,
+            points = scoreManager.GetPointsForAnamnesis(question.prompt, isCorrect)
         });
 
         questionIndex++;
@@ -126,10 +107,19 @@ public class AnamnesisManager : MonoBehaviour
 
     void FinishAnamnesis()
     {
-        foreach (var e in wrongLog)
-            Debug.Log($"Pergunta errada: {e.q} — {e.justification}");
-
         worldSpaceCanvas.gameObject.SetActive(false);
-        PhaseManager.Instance.FinishStep();
+        PhaseEvents.RaiseStepFinished();
+    }
+
+    void PlayClip(AudioClip clip)
+    {
+        if (clip != null)
+            audioManager.Play(clip);
+    }
+
+    void PlayRandomClip(AudioClip[] clips)
+    {
+        if (clips != null && clips.Length > 0)
+            audioManager.Play(clips[Random.Range(0, clips.Length)]);
     }
 }
