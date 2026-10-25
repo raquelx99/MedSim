@@ -1,0 +1,18 @@
+{
+    "name": "MedSim.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:e9f552ac92759bd7afebc2da06b03609"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

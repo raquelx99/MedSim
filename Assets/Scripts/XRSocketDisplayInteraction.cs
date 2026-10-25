@@ -25,20 +25,10 @@ public class XRSocketDisplayInteraction : MonoBehaviour
 
     private void OnSelectEntered(SelectEnterEventArgs args)
     {
-        GameObject instrumentObject = args.interactableObject.transform.gameObject;
-        ExamItem examItem = instrumentObject.GetComponent<ExamItem>();
+        ExamItem examItem = args.interactableObject.transform.GetComponent<ExamItem>();
         if (examItem != null)
-        {
-            string objectID = examItem.objectID;
-            Debug.Log($"Instrumento '{objectID}' foi usado.");
-            PhysicalExamManager examManager = FindObjectOfType<PhysicalExamManager>();
-            if (examManager != null)
-            {
-                examManager.RegisterExamItem(objectID);
-            }
-        }
+            InstrumentEvents.RaiseInstrumentUsed(examItem.objectID);
+
         display.ShowImage(displayImage);
     }
-    
 }
-

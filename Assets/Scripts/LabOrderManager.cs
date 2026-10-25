@@ -1,81 +1,44 @@
-using UnityEngine;
-using System.Collections.Generic;
-using TMPro;
-using UnityEngine.UI;
-using Unity.VisualScripting;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class LabOrderManager : MonoBehaviour
 {
+    private static readonly Color SelectedToggleColor = new Color32(0x22, 0x9C, 0xBE, 0xFF);
+    private static readonly Color UnselectedToggleColor = Color.white;
+
     public PatientPhaseSO phaseData;
     public ScoreManager scoreManager;
 
-    private Dictionary<string, Toggle> toggleDict = new();
-    private HashSet<string> selectedLabs = new();
+    public GameObject togglePrefab;
+    public Transform toggleGrid;
 
     public Transform resultButtonContainer;
     public GameObject resultButtonPrefab;
     public Transform resultContainer;
+    public TextMeshProUGUI resultText;
 
     public Image tabletImage;
     public Button tabletNextButton;
     public Button tabletPrevButton;
-
-    public TextMeshProUGUI resultText;
-    public GameObject togglePrefab;
-    public Transform toggleGrid;
     public NegatoscopeDisplay negatoscope;
 
-    private List<Sprite> currentResultPages = new List<Sprite>();
-    private int currentResultPageIndex = 0;
+    private readonly Dictionary<string, Toggle> toggleByExamID = new();
+    private readonly HashSet<string> selectedLabs = new();
+    private List<Sprite> currentResultPages = new();
+    private int currentResultPageIndex;
 
     void Start()
     {
-        StartCoroutine(DelayedToggleGeneration());
-    }
+        if (scoreManager == null && PhaseManager.Instance != null)
+            scoreManager = PhaseManager.Instance.scoreManager;
+        if (phaseData == null && PhaseManager.Instance != null)
+            phaseData = PhaseManager.Instance.phaseData;
 
-    IEnumerator DelayedToggleGeneration()
-    {
-        yield return new WaitForEndOfFrame();
-        GenerateExamToggles();
-    }
-
-    void GenerateExamToggles()
-    {
-        foreach (var exam in phaseData.examResults)
-        {
-            GameObject go = Instantiate(togglePrefab, toggleGrid);
-            Toggle toggle = go.GetComponent<Toggle>();
-            TextMeshProUGUI label = go.GetComponentInChildren<TextMeshProUGUI>();
-            var currentExam = exam;
-
-            Image bg = toggle.GetComponent<Image>();
-
-            toggle.onValueChanged.AddListener((isOn) =>
-            {
-                if (isOn)
-            {
-                selectedLabs.Add(currentExam.examType.examID);
-                if (bg != null)
-                    bg.color = new Color32(0x22, 0x9C, 0xBE, 0xFF); // #229CBE
-            }
-            else
-            {
-                selectedLabs.Remove(currentExam.examType.examID);
-                if (bg != null)
-                    bg.color = Color.white;
-            }
-            });
-
-            if (bg != null)
-            bg.color = toggle.isOn ? new Color32(0x22, 0x9C, 0xBE, 0xFF) : Color.white;
-
-            label.text = exam.examType.examName;
-            toggleDict[exam.examType.examID] = toggle;
-
-            go.SetActive(true);
-        }
+        StartCoroutine(GenerateExamTogglesAtEndOfFrame());
     }
 
     public void OnLabToggle(string labID, bool isOn)
@@ -86,47 +49,20 @@ public class LabOrderManager : MonoBehaviour
 
     public void ConfirmLabs()
     {
-
-        foreach (var lab in selectedLabs)
+        foreach (string labID in selectedLabs)
         {
-            bool acertou = System.Array.Exists(phaseData.correctLabTestIDs, id => id == lab);
-            int pointsToApply = scoreManager.GetPointsForLabExam(lab, acertou);
-
-            Debug.Log($"AVALIANDO EXAME SELECIONADO: ID='{lab}', Acertou?={acertou}, Pontos Aplicados={pointsToApply}");
-
-            scoreManager.RegisterScoreEntry(new ScoreEntry
-            {
-                category = ScoreCategory.LabExams,
-                severity = acertou ? ErrorSeverity.Leve : ErrorSeverity.Moderado,
-                actionID = lab,
-                isCorrect = acertou,
-                justification = acertou ? "" : "Exame desnecessário para o quadro clínico.",
-                points = pointsToApply
-            });
+            bool isCorrect = phaseData.correctLabTestIDs.Contains(labID);
+            RegisterLabEntry(
+                labID,
+                isCorrect,
+                isCorrect ? ErrorSeverity.Leve : ErrorSeverity.Moderado,
+                isCorrect ? "" : "Exame desnecessário para o quadro clínico.");
         }
 
-        foreach (var req in phaseData.correctLabTestIDs)
-        {
-            if (!selectedLabs.Contains(req))
-            {
-                int pointsToApply = scoreManager.GetPointsForLabExam(req, false);
+        foreach (string requiredID in phaseData.correctLabTestIDs.Where(id => !selectedLabs.Contains(id)))
+            RegisterLabEntry(requiredID, false, ErrorSeverity.Moderado, "Exame essencial não solicitado.");
 
-                Debug.Log($"AVALIANDO EXAME ESQUECIDO: ID='{req}', Pontos Aplicados={pointsToApply}");
-
-                scoreManager.RegisterScoreEntry(new ScoreEntry
-                {
-                    category = ScoreCategory.LabExams,
-                    severity = ErrorSeverity.Moderado,
-                    actionID = req,
-                    isCorrect = false,
-                    justification = "Exame essencial não solicitado.",
-                    points = pointsToApply
-                });
-            }
-        }
-
-        PhaseManager.Instance.FinishStep();
-
+        PhaseEvents.RaiseStepFinished();
     }
 
     public void ShowResultsUI()
@@ -134,145 +70,152 @@ public class LabOrderManager : MonoBehaviour
         foreach (Transform child in resultButtonContainer)
             Destroy(child.gameObject);
 
-        // usar uma cópia da coleção para manter ordem estável (opcional)
-        var labsList = selectedLabs.ToList();
-
-        foreach (string examID in labsList)
+        foreach (string examID in selectedLabs.ToList())
         {
-            var resultData = GetResultDataForExam(examID);
-            if (resultData == null) continue;
+            PhaseExamResult result = FindResult(examID);
+            if (result == null) continue;
 
-            GameObject btn = Instantiate(resultButtonPrefab, resultButtonContainer);
-            Button button = btn.GetComponent<Button>();
-            TextMeshProUGUI label = btn.GetComponentInChildren<TextMeshProUGUI>();
-
-            label.text = resultData.examType.examName;
-
-            button.onClick.AddListener(() =>
-            {
-                ShowSingleResult(resultData);
-            });
-
-            button.gameObject.SetActive(true);
+            GameObject buttonObject = Instantiate(resultButtonPrefab, resultButtonContainer);
+            buttonObject.GetComponentInChildren<TextMeshProUGUI>().text = result.examType.examName;
+            buttonObject.GetComponent<Button>().onClick.AddListener(() => ShowSingleResult(result));
+            buttonObject.SetActive(true);
         }
     }
 
-    PhaseExamResult GetResultDataForExam(string examID)
+    public void NextTabletPage()
     {
-        foreach (var r in phaseData.examResults)
-            if (r.examType.examID == examID)
-                return r;
+        if (currentResultPageIndex >= currentResultPages.Count - 1) return;
 
-        return null;
+        currentResultPageIndex++;
+        UpdateTabletImage();
+    }
+
+    public void PrevTabletPage()
+    {
+        if (currentResultPageIndex <= 0) return;
+
+        currentResultPageIndex--;
+        UpdateTabletImage();
+    }
+
+    public void ResetOrders()
+    {
+        selectedLabs.Clear();
+        foreach (Toggle toggle in toggleByExamID.Values)
+            toggle.isOn = false;
+
+        resultContainer.gameObject.SetActive(false);
+        resultText.gameObject.SetActive(false);
+        negatoscope.Hide();
+        HideTabletViewer();
+        ClearTabletPages();
+    }
+
+    IEnumerator GenerateExamTogglesAtEndOfFrame()
+    {
+        yield return new WaitForEndOfFrame();
+        GenerateExamToggles();
+    }
+
+    void GenerateExamToggles()
+    {
+        foreach (PhaseExamResult exam in phaseData.examResults)
+        {
+            string examID = exam.examType.examID;
+            GameObject toggleObject = Instantiate(togglePrefab, toggleGrid);
+            Toggle toggle = toggleObject.GetComponent<Toggle>();
+            Image background = toggle.GetComponent<Image>();
+
+            toggle.onValueChanged.AddListener(isOn =>
+            {
+                OnLabToggle(examID, isOn);
+                SetToggleColor(background, isOn);
+            });
+
+            SetToggleColor(background, toggle.isOn);
+            toggleObject.GetComponentInChildren<TextMeshProUGUI>().text = exam.examType.examName;
+            toggleByExamID[examID] = toggle;
+            toggleObject.SetActive(true);
+        }
+    }
+
+    static void SetToggleColor(Image background, bool isOn)
+    {
+        if (background != null)
+            background.color = isOn ? SelectedToggleColor : UnselectedToggleColor;
+    }
+
+    void RegisterLabEntry(string labID, bool isCorrect, ErrorSeverity severity, string justification)
+    {
+        scoreManager.RegisterScoreEntry(new ScoreEntry
+        {
+            category = ScoreCategory.LabExams,
+            severity = severity,
+            actionID = labID,
+            isCorrect = isCorrect,
+            justification = justification,
+            points = scoreManager.GetPointsForLabExam(labID, isCorrect)
+        });
+    }
+
+    PhaseExamResult FindResult(string examID)
+    {
+        return phaseData.examResults.FirstOrDefault(result => result.examType.examID == examID);
     }
 
     void ShowSingleResult(PhaseExamResult result)
     {
         resultContainer.gameObject.SetActive(true);
-        tabletImage.gameObject.SetActive(false);
-
-        // limpa viewer anterior
         ClearTabletPages();
 
         if (result.examType.isImaging)
-        {
-            // imagem única no negatoscópio (com a mensagem informando)
-            var sprite = result.isAbnormal ?
-                result.examType.abnormalImageResult :
-                result.examType.normalImageResult;
-
-            resultText.gameObject.SetActive(true);
-            resultText.text = "Imagem aparecerá no negatoscópio.";
-
-            Debug.Log($"Exibindo imagem para o exame: {result.examType.examName} no negatoscópio");
-
-            negatoscope.ShowImage(sprite);
-
-            // esconder viewer do tablet
-            HideTabletViewer();
-        }
+            ShowImagingResult(result);
         else
-        {
-            tabletImage.color = Color.white;
-            tabletImage.gameObject.SetActive(true);
-
-            // usa os arrays de sprites (padrão) para resultados não-imagem
-            Sprite[] pages = result.isAbnormal ?
-                result.examType.defaultAbnormalResult :
-                result.examType.defaultNormalResult;
-
-            if (pages != null && pages.Length > 0)
-            {
-                currentResultPages = pages.ToList();
-                currentResultPageIndex = 0;
-                UpdateTabletImage();
-                ShowTabletViewer();
-                resultText.gameObject.SetActive(false); // esconder texto quando temos imagens
-                Debug.Log($"Exibindo {currentResultPages.Count} páginas de resultados para o exame: {result.examType.examName}");
-            }
-            else
-            {
-                // fallback caso não haja sprites: mostra texto informativo
-                resultText.gameObject.SetActive(true);
-                resultText.text = "Resultado não disponível.";
-                HideTabletViewer();
-            }
-
-            // esconder negatoscópio caso estivesse visível
-            negatoscope.Hide();
-        }
+            ShowDocumentResult(result);
     }
 
-    // ---------------- tablet paging ----------------
-
-    void HookTabletButtons()
+    void ShowImagingResult(PhaseExamResult result)
     {
-        if (tabletNextButton != null)
+        Sprite image = result.isAbnormal ? result.examType.abnormalImageResult : result.examType.normalImageResult;
+
+        ShowMessage("Imagem aparecerá no negatoscópio.");
+        HideTabletViewer();
+        negatoscope.ShowImage(image);
+    }
+
+    void ShowDocumentResult(PhaseExamResult result)
+    {
+        Sprite[] pages = result.isAbnormal ? result.examType.defaultAbnormalResult : result.examType.defaultNormalResult;
+        negatoscope.Hide();
+
+        if (pages == null || pages.Length == 0)
         {
-            tabletNextButton.onClick.RemoveAllListeners();
-            tabletNextButton.onClick.AddListener(NextTabletPage);
+            ShowMessage("Resultado não disponível.");
+            HideTabletViewer();
+            return;
         }
 
-        if (tabletPrevButton != null)
-        {
-            tabletPrevButton.onClick.RemoveAllListeners();
-            tabletPrevButton.onClick.AddListener(PrevTabletPage);
-        }
+        currentResultPages = pages.ToList();
+        tabletImage.color = Color.white;
+        resultText.gameObject.SetActive(false);
+        ShowTabletViewer();
+        UpdateTabletImage();
+    }
+
+    void ShowMessage(string message)
+    {
+        resultText.gameObject.SetActive(true);
+        resultText.text = message;
     }
 
     void UpdateTabletImage()
     {
-        if (tabletImage == null || currentResultPages == null || currentResultPages.Count == 0)
-            return;
+        if (currentResultPages.Count == 0) return;
 
         tabletImage.gameObject.SetActive(true);
         tabletImage.sprite = currentResultPages[currentResultPageIndex];
-
-        // atualiza estado dos botões
-        if (tabletPrevButton != null)
-            tabletPrevButton.gameObject.SetActive(currentResultPageIndex > 0);
-        if (tabletNextButton != null)
-            tabletNextButton.gameObject.SetActive(currentResultPageIndex < currentResultPages.Count - 1);
-    }
-
-    public void NextTabletPage()
-    {
-        if (currentResultPages == null || currentResultPages.Count == 0) return;
-        if (currentResultPageIndex < currentResultPages.Count - 1)
-        {
-            currentResultPageIndex++;
-            UpdateTabletImage();
-        }
-    }
-
-    public void PrevTabletPage()
-    {
-        if (currentResultPages == null || currentResultPages.Count == 0) return;
-        if (currentResultPageIndex > 0)
-        {
-            currentResultPageIndex--;
-            UpdateTabletImage();
-        }
+        tabletPrevButton.gameObject.SetActive(currentResultPageIndex > 0);
+        tabletNextButton.gameObject.SetActive(currentResultPageIndex < currentResultPages.Count - 1);
     }
 
     void ClearTabletPages()
@@ -283,29 +226,18 @@ public class LabOrderManager : MonoBehaviour
 
     void ShowTabletViewer()
     {
-        if (tabletImage != null) tabletImage.gameObject.SetActive(true);
-        if (tabletNextButton != null) tabletNextButton.gameObject.SetActive(true);
-        if (tabletPrevButton != null) tabletPrevButton.gameObject.SetActive(true);
+        SetTabletViewerActive(true);
     }
 
     void HideTabletViewer()
     {
-        if (tabletImage != null) tabletImage.gameObject.SetActive(false);
-        if (tabletNextButton != null) tabletNextButton.gameObject.SetActive(false);
-        if (tabletPrevButton != null) tabletPrevButton.gameObject.SetActive(false);
+        SetTabletViewerActive(false);
     }
 
-    public void ResetOrders()
+    void SetTabletViewerActive(bool isActive)
     {
-        selectedLabs.Clear();
-        foreach (var toggle in toggleDict.Values)
-        {
-            toggle.isOn = false;
-        }
-        resultContainer.gameObject.SetActive(false);
-        negatoscope.Hide();
-        HideTabletViewer();
-        ClearTabletPages();
-        resultText.gameObject.SetActive(false);
+        tabletImage.gameObject.SetActive(isActive);
+        tabletNextButton.gameObject.SetActive(isActive);
+        tabletPrevButton.gameObject.SetActive(isActive);
     }
 }

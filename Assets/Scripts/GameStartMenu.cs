@@ -18,12 +18,10 @@ public class GameStartMenu : MonoBehaviour
 
     public List<Button> returnButtons;
 
-    // Start is called before the first frame update
     void Start()
     {
         EnableMainMenu();
 
-        //Hook events
         startButton.onClick.AddListener(StartGame);
         optionButton.onClick.AddListener(EnableOption);
         aboutButton.onClick.AddListener(EnableAbout);

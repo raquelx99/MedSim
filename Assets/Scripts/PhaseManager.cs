@@ -1,37 +1,52 @@
-using UnityEngine;
 using System.Linq;
 using TMPro;
-using UnityEngine.UI;
-using Unity.VisualScripting;
-using UnityEditor.SearchService;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PhaseManager : MonoBehaviour
 {
+    public enum Part { Anamnese, Exam, Labs, Transition, Diagnosis }
+
     public static PhaseManager Instance { get; private set; }
-    private SceneManager sceneManager;
 
     public PatientPhaseSO phaseData;
     public ScoreManager scoreManager;
+    public AnamnesisManager anamnesisManager;
+    public PhysicalExamManager physicalExamManager;
     public LabOrderManager labOrderManager;
     public TransitionManager transitionManager;
     public DiagnosisManager diagnosisManager;
-
-    public enum Part { Anamnese, Exam, Labs, Transition, Diagnosis }
-    public Part currentPart { get; private set; } = Part.Anamnese;
+    public FeedbackManager feedbackManager;
 
     public TextMeshProUGUI pranchetaText;
-
     public Button pranchetaButton;
     public GameObject uIPedidoExames;
     public GameObject uIDiagnosis;
-    public FeedbackManager feedbackManager;
-    public float totalPhaseTime { get; private set; }
+
     private float startTime;
+
+    public Part currentPart { get; private set; } = Part.Anamnese;
+    public float totalPhaseTime { get; private set; }
 
     void Awake()
     {
         Instance = this;
+
+        if (anamnesisManager == null)
+            anamnesisManager = FindObjectOfType<AnamnesisManager>();
+        if (physicalExamManager == null)
+            physicalExamManager = FindObjectOfType<PhysicalExamManager>();
+    }
+
+    void OnEnable()
+    {
+        PhaseEvents.StepFinished += FinishStep;
+    }
+
+    void OnDisable()
+    {
+        PhaseEvents.StepFinished -= FinishStep;
     }
 
     void Start()
@@ -43,31 +58,48 @@ public class PhaseManager : MonoBehaviour
     public void NextPart()
     {
         currentPart++;
+
         switch (currentPart)
         {
             case Part.Exam: StartExamPhase(); break;
             case Part.Labs: StartLabsPhase(); break;
             case Part.Transition: StartTransitionPhase(); break;
             case Part.Diagnosis: StartDiagnosisPhase(); break;
-            case Part.Diagnosis + 1: FinishPhase(); break;
+            default: FinishPhase(); break;
         }
+    }
+
+    public void FinishStep()
+    {
+        NextPart();
+    }
+
+    public void FinishPhase()
+    {
+        uIDiagnosis.SetActive(false);
+        feedbackManager.gameObject.SetActive(true);
+        totalPhaseTime = Time.time - startTime;
+        feedbackManager.ShowFeedback();
+    }
+
+    public void RestartPhase()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     void StartAnamnese()
     {
-        var anamnesisManager = FindObjectOfType<AnamnesisManager>();
-        anamnesisManager.Init(
-            phaseData.dialogueSteps.ToList(),
-            phaseData.anamnesisSteps.ToList()
-        );
+        anamnesisManager.Init(phaseData.dialogueSteps.ToList(), phaseData.anamnesisSteps.ToList());
     }
 
     void StartExamPhase()
     {
-        Debug.Log("Fase de exame físico iniciada.");
-
         pranchetaText.text = "Exame Físico: Use os itens corretos. Quando terminar, clique no botão confirmar.";
         pranchetaButton.gameObject.SetActive(true);
+
+        pranchetaButton.onClick.RemoveAllListeners();
+        if (physicalExamManager != null)
+            pranchetaButton.onClick.AddListener(physicalExamManager.FinishPhysicalExam);
     }
 
     void StartLabsPhase()
@@ -76,8 +108,6 @@ public class PhaseManager : MonoBehaviour
         pranchetaButton.gameObject.SetActive(false);
         uIPedidoExames.SetActive(true);
         labOrderManager.gameObject.SetActive(true);
-
-        Debug.Log("Fase de pedidos de exames iniciada.");
     }
 
     void StartTransitionPhase()
@@ -91,32 +121,9 @@ public class PhaseManager : MonoBehaviour
     {
         labOrderManager.ShowResultsUI();
         uIPedidoExames.SetActive(false);
-        pranchetaText.text = "Diagnóstico: Selecione o diagnóstico correto e confirme.";
         labOrderManager.gameObject.SetActive(false);
+        pranchetaText.text = "Diagnóstico: Selecione o diagnóstico correto e confirme.";
         diagnosisManager.gameObject.SetActive(true);
         uIDiagnosis.SetActive(true);
-
-        Debug.Log("Fase de diagnóstico iniciada.");
     }
-
-    public void FinishStep()
-    {
-        NextPart();
-    }
-
-    public void FinishPhase()
-    {
-        uIDiagnosis.SetActive(false);
-        feedbackManager.gameObject.SetActive(true);
-        string summary = scoreManager.GetScoreSummary();
-        totalPhaseTime = Time.time - startTime;
-        feedbackManager.ShowFeedback();
-        Debug.Log($"Fim da fase.\n{summary}");
-    }
-
-    public void RestartPhase()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-    
 }

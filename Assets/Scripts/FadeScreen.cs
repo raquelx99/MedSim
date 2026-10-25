@@ -11,7 +11,6 @@ public class FadeScreen : MonoBehaviour
     public string colorPropertyName = "_Color";
     private Renderer rend;
 
-    // Start is called before the first frame update
     void Start()
     {
         rend = GetComponent<Renderer>();

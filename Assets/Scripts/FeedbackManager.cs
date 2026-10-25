@@ -54,8 +54,7 @@ public class FeedbackManager : MonoBehaviour
         }
 
         pages.Add(("Análise Clínica", GenerateAnalysis(entries)));
-
-        pages.Add(("Dicas para Melhorar", GenerateTips(entries)));
+        pages.Add(("Dicas para Melhorar", GenerateTips()));
 
         nextButton.onClick.RemoveAllListeners();
         prevButton.onClick.RemoveAllListeners();
@@ -121,22 +120,17 @@ public class FeedbackManager : MonoBehaviour
 
     private string MapSuggestion(ScoreCategory category)
     {
-        switch (category)
+        return category switch
         {
-            case ScoreCategory.Anamnese:
-                return "Revise como formular perguntas abertas para obter informações clínicas completas.";
-            case ScoreCategory.PhysicalExam:
-                return "Garanta que todos os principais sinais vitais e exames físicos sejam verificados.";
-            case ScoreCategory.LabExams:
-                return "Considere quais exames laboratoriais são mais indicados e seus critérios de solicitação.";
-            case ScoreCategory.Diagnosis:
-                return "Verifique se todos os critérios diagnósticos estão atendidos antes de confirmar.";
-            default:
-                return "Revisite essa etapa para melhorar seu raciocínio clínico.";
-        }
+            ScoreCategory.Anamnese => "Revise como formular perguntas abertas para obter informações clínicas completas.",
+            ScoreCategory.PhysicalExam => "Garanta que todos os principais sinais vitais e exames físicos sejam verificados.",
+            ScoreCategory.LabExams => "Considere quais exames laboratoriais são mais indicados e seus critérios de solicitação.",
+            ScoreCategory.Diagnosis => "Verifique se todos os critérios diagnósticos estão atendidos antes de confirmar.",
+            _ => "Revisite essa etapa para melhorar seu raciocínio clínico."
+        };
     }
 
-    private string GenerateTips(List<ScoreEntry> entries)
+    private string GenerateTips()
     {
         var sb = new StringBuilder();
         sb.AppendLine("- Pratique casos clínicos com foco na coleta de anamnese completa.");

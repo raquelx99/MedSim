@@ -1,135 +1,89 @@
+using System;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
 
-[System.Serializable]
+[Serializable]
 public struct ScoreMapping
 {
-    public string id; 
+    public string id;
     public int correctPoints;
     public int incorrectPenalty;
 }
+
 public class ScoreManager : MonoBehaviour
 {
-    private List<ScoreEntry> entries = new();
-    [Header("CONFIGURAÇÃO DE PONTOS DA FASE")]
-    [Tooltip("Pontos para cada pergunta da Anamnese. 'ID' deve ser o texto exato do 'prompt' da pergunta.")]
     public List<ScoreMapping> anamnesisScores;
-
-    [Tooltip("Pontos para cada item do Exame Físico. 'ID' é o 'objectID' do item.")]
     public List<ScoreMapping> physicalExamScores;
-
-    [Tooltip("Pontos para cada pedido de Exame Laboratorial. 'ID' é o 'examID' do exame.")]
     public List<ScoreMapping> labExamScores;
-
-    [Tooltip("Pontos para o Diagnóstico Final. 'ID' é o texto exato do diagnóstico.")]
     public List<ScoreMapping> diagnosisScores;
-    private const int maxScore = 100;
+
+    private readonly List<ScoreEntry> entries = new();
+
+    public event Action<ScoreEntry> OnEntryRegistered;
 
     public int GetPointsForAnamnesis(string questionPrompt, bool isCorrect)
     {
-        ScoreMapping rule = anamnesisScores.FirstOrDefault(s => s.id == questionPrompt);
-        if (rule.id != null)
-        {
-            return isCorrect ? rule.correctPoints : -rule.incorrectPenalty;
-        }
-        return isCorrect ? 2 : 0;
+        return ResolvePoints(anamnesisScores, questionPrompt, isCorrect, defaultReward: 2, defaultPenalty: 0);
     }
 
     public int GetPointsForPhysicalExam(string itemID, bool isCorrect)
     {
-        ScoreMapping rule = physicalExamScores.FirstOrDefault(s => s.id == itemID);
-        if (rule.id != null)
-        {
-            return isCorrect ? rule.correctPoints : -rule.incorrectPenalty;
-        }
-        return isCorrect ? 20 : -5;
+        return ResolvePoints(physicalExamScores, itemID, isCorrect, defaultReward: 20, defaultPenalty: -5);
     }
 
     public int GetPointsForLabExam(string examID, bool isCorrect)
     {
-        ScoreMapping rule = labExamScores.FirstOrDefault(s => s.id == examID);
-        if (rule.id != null)
-        {
-            return isCorrect ? rule.correctPoints : -rule.incorrectPenalty;
-        }
-        return isCorrect ? 20 : -1;
+        return ResolvePoints(labExamScores, examID, isCorrect, defaultReward: 20, defaultPenalty: -1);
     }
 
     public int GetPointsForDiagnosis(string diagnosisText, bool isCorrect)
     {
-        ScoreMapping rule = diagnosisScores.FirstOrDefault(s => s.id == diagnosisText);
-        if (rule.id != null)
-        {
-            return isCorrect ? rule.correctPoints : -rule.incorrectPenalty;
-        }
-        return isCorrect ? 40 : -20;
+        return ResolvePoints(diagnosisScores, diagnosisText, isCorrect, defaultReward: 40, defaultPenalty: -20);
     }
 
     public void RegisterScoreEntry(ScoreEntry entry)
     {
         entries.Add(entry);
+        OnEntryRegistered?.Invoke(entry);
     }
 
     public float GetCurrentTotalPoints()
     {
-        float totalPoints = 0f;
-        foreach (var entry in entries)
-        {
-            totalPoints += entry.points;
-        }
-        return totalPoints;
+        return entries.Sum(entry => entry.points);
     }
 
     public string GetScoreSummary()
     {
-        Dictionary<ScoreCategory, int> acertosPorCategoria = new();
-        Dictionary<ScoreCategory, int> errosPorCategoria = new();
+        var summary = new System.Text.StringBuilder();
+        summary.Append($"Pontuação final: {Mathf.Max(0, GetCurrentTotalPoints())}\n\n");
 
-        int totalAcertos = 0;
-        int totalErros = 0;
-
-        foreach (var entry in entries)
+        foreach (ScoreCategory category in Enum.GetValues(typeof(ScoreCategory)))
         {
-            if (entry.isCorrect)
-            {
-                totalAcertos++;
-                if (!acertosPorCategoria.ContainsKey(entry.category))
-                    acertosPorCategoria[entry.category] = 0;
-                acertosPorCategoria[entry.category]++;
-            }
-            else
-            {
-                totalErros++;
-                if (!errosPorCategoria.ContainsKey(entry.category))
-                    errosPorCategoria[entry.category] = 0;
-                errosPorCategoria[entry.category]++;
-            }
+            int hits = entries.Count(e => e.category == category && e.isCorrect);
+            int misses = entries.Count(e => e.category == category && !e.isCorrect);
+            summary.Append($"{category}: {hits} acertos, {misses} erros\n");
         }
 
-
-        float finalScore = GetCurrentTotalPoints();
-        finalScore = Mathf.Max(0, finalScore);
-
-        string summary = $"Pontuação final: {finalScore}\n\n";
-        foreach (ScoreCategory category in System.Enum.GetValues(typeof(ScoreCategory)))
-        {
-            int acertos = acertosPorCategoria.ContainsKey(category) ? acertosPorCategoria[category] : 0;
-            int erros = errosPorCategoria.ContainsKey(category) ? errosPorCategoria[category] : 0;
-            summary += $"{category}: {acertos} acertos, {erros} erros\n";
-        }
-
-        return summary;
+        return summary.ToString();
     }
 
     public void ResetScores()
     {
         entries.Clear();
     }
-    
+
     public IReadOnlyList<ScoreEntry> GetAllEntries()
     {
         return entries;
     }
 
+    static int ResolvePoints(List<ScoreMapping> mappings, string id, bool isCorrect, int defaultReward, int defaultPenalty)
+    {
+        ScoreMapping rule = mappings.FirstOrDefault(mapping => mapping.id == id);
+        if (rule.id == null)
+            return isCorrect ? defaultReward : defaultPenalty;
+
+        return isCorrect ? rule.correctPoints : -rule.incorrectPenalty;
+    }
 }
