@@ -22,9 +22,14 @@ public class TransitionManager : MonoBehaviour
 
     void Start()
     {
+        if (patientAnimationController == null || !patientAnimationController.gameObject.activeInHierarchy)
+        {
+            patientAnimationController = FindObjectOfType<PatientAnimationController>();
+        }
+
         if (patientAnimationController == null)
         {
-            Debug.LogError("A referência para PatientAnimationController não foi atribuída no TransitionManager!", gameObject);
+            Debug.LogError("A referência para PatientAnimationController não foi atribuída ou nenhum paciente ativo foi encontrado!", gameObject);
             enabled = false;
             return;
         }

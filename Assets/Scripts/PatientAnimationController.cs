@@ -94,6 +94,16 @@ public class PatientAnimationController : MonoBehaviour
 
     private bool IsInState(string stateName)
     {
-        return patientAnimator.GetCurrentAnimatorStateInfo(0).IsName(stateName);
+        AnimatorStateInfo stateInfo = patientAnimator.GetCurrentAnimatorStateInfo(0);
+        if (stateInfo.IsName(stateName))
+            return true;
+
+        if (stateName.Equals("Walking", System.StringComparison.OrdinalIgnoreCase))
+            return stateInfo.IsName("Walking") || stateInfo.IsName("walking");
+
+        if (stateName.Equals("Sitting", System.StringComparison.OrdinalIgnoreCase))
+            return stateInfo.IsName("Sitting") || stateInfo.IsName("sitting_idle");
+
+        return false;
     }
 }
