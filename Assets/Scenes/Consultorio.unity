@@ -8639,9 +8639,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patientAnimator: {fileID: 1160684192}
+  parentAnimator: {fileID: 0}
   patientAgent: {fileID: 1160684197}
   transitionManager: {fileID: 0}
   anamnesisAudioSource: {fileID: 0}
+  parentMovingStateName: moving
+  parentIdleStateName: Idle
+  movingDuration: 3.5
   pontoIncioCaminhada: {fileID: 358656498}
   pontoDestino: {fileID: 675087178}
   tempoDeEsperaNoDestino: 3
@@ -8948,6 +8952,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1242183815}
+  - component: {fileID: 1242183816}
   m_Layer: 0
   m_Name: Personagem
   m_TagString: Untagged
@@ -8972,6 +8977,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1242183816
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242183814}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4d3f963bf1067584c924d3ef2f165c42, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1244691125 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 84b0e01391ba38e43af898a4711d3277,
@@ -13262,9 +13288,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patientAnimator: {fileID: 1908161541}
+  parentAnimator: {fileID: 1242183816}
   patientAgent: {fileID: 1908161543}
   transitionManager: {fileID: 1964160252}
   anamnesisAudioSource: {fileID: 1948582370}
+  parentMovingStateName: moving
+  parentIdleStateName: Idle
+  movingDuration: 3.5
   pontoIncioCaminhada: {fileID: 358656498}
   pontoDestino: {fileID: 675087178}
   tempoDeEsperaNoDestino: 3
