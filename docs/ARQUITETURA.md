@@ -16,7 +16,7 @@ Anamnese → Exame Físico → Exames Laboratoriais → (Transição) → Diagn�
 
 Esse fluxo é orquestrado por uma máquina de estados central (`PhaseManager`) e apoiado por
 managers especializados por etapa, um sistema de pontuação central e uma camada de dados via
-ScriptableObjects. A cena principal de jogo é `Assets/Scenes/Consultorio.unity`; há também
+ScriptableObjects. A cena principal de jogo é `Assets/_Project/Scenes/Consultorio.unity`; há também
 `MenuPrincipal.unity` (menu inicial) e `SampleScene.unity` (não faz parte do fluxo do jogo).
 
 ## 2. Sistemas principais identificados
@@ -37,7 +37,7 @@ ScriptableObjects. A cena principal de jogo é `Assets/Scenes/Consultorio.unity`
 | **Menu e transição de cena** | `GameStartMenu.cs`, `SceneTransitionManager.cs`, `FadeScreen.cs` | Menu inicial, fade e carregamento de cena. |
 | **Configurações XR/Jogador** | `SetOptionFromUI.cs`, `SetTurnTypeFromPlayerPref.cs` | Volume global e tipo de rotação (snap/contínua) via `PlayerPrefs`. |
 | **Stub sem uso** | `UIManager.cs` | Classe vazia, sem lógica implementada. |
-| **Ativos de terceiros** | `Assets/Stethoscope/*`, `Assets/SimpleHands/*`, `Assets/Lets Make a VR Game/*` | Modelos/prefabs e scripts de suporte (ex.: `SplineRope.cs`) de asset packs, usados como instrumentos/mãos, sem integração própria de lógica de jogo. |
+| **Ativos de terceiros** | `Assets/ThirdParty/Stethoscope/*`, `Assets/ThirdParty/SimpleHands/*`, `Assets/ThirdParty/Lets Make a VR Game/*` | Modelos/prefabs e scripts de suporte (ex.: `SplineRope.cs`) de asset packs, usados como instrumentos/mãos, sem integração própria de lógica de jogo. |
 
 ## 3. Fluxo técnico documentado
 
@@ -110,7 +110,7 @@ Toolkit.
 - **Camada de dados (ScriptableObjects) é compartilhada por leitura**: `PatientPhaseSO` agrega
   `DialogueStepSO[]`, `AnamnesisStepSO[]` (que por sua vez referencia `QuestionSO`),
   `PhaseExamResult[]` (que referencia `ExamTypeSO`), IDs de exames/diagnósticos corretos. Hoje
-  existe apenas **um** asset de fase (`Assets/Data/Phases/Patient1.asset`), ou seja, só um caso
+  existe apenas **um** asset de fase (`Assets/_Project/Data/Phases/Patient1.asset`), ou seja, só um caso
   clínico está configurado.
 - **Pontuação é desacoplada da UI**: `ScoreManager` não conhece nenhuma UI, apenas acumula
   `ScoreEntry`; é consumido por `FeedbackManager` só no fim da fase — bom ponto de design.
@@ -123,7 +123,7 @@ Toolkit.
   quase idênticas (Image + painel liga/desliga), sem uma classe base comum.
 - **Nenhum mecanismo de eventos/EventBus.** Não há um único uso de `event`/`delegate` de C#, de
   `UnityEvent` customizado (fora do `onClick` de botões de UI) ou de um EventBus/Event Channel
-  (padrão comum em Unity para desacoplar sistemas via ScriptableObject) em todo `Assets/Scripts`.
+  (padrão comum em Unity para desacoplar sistemas via ScriptableObject) em todo `Assets/_Project/Scripts`.
   Toda a comunicação entre `AnamnesisManager`, `PhysicalExamManager`, `LabOrderManager`,
   `DiagnosisManager`, `TransitionManager` e `PhaseManager` acontece por **chamada direta de
   método** (`FinishStep()`, `RegisterExamItem()`, `ConfirmLabs()` etc.), apoiada em singleton ou
@@ -229,7 +229,7 @@ também deu negativo — ver 8.1.1).
 
 ### 8.1 Descartado após verificação — `SplineRope.cs` não é usado na cena de jogo
 
-Arquivo: `Assets/Stethoscope/Scripts/SplineRope.cs` (script de terceiros do asset pack do
+Arquivo: `Assets/ThirdParty/Stethoscope/Scripts/SplineRope.cs` (script de terceiros do asset pack do
 estetoscópio). Numa primeira leitura este script pareceu um forte suspeito, por ter
 `[ExecuteInEditMode]` + `Update()` fazendo milhares de amostragens de spline por frame
 (`for (float t = 0; t <= 1; t += .001f)` repetido por segmento de corda). **Essa suspeita foi
@@ -237,10 +237,10 @@ verificada e descartada**, então fica registrada aqui só para não ser levanta
 necessidade:
 
 - O script está de fato configurado (com `spline` e ~20 `transforms`) no prefab
-  `Assets/Stethoscope/Prefabs/Stethoscope.prefab`.
-- Porém esse prefab **não aparece em `Assets/Scenes/Consultorio.unity`** (a cena real do jogo) —
+  `Assets/ThirdParty/Stethoscope/Prefabs/Stethoscope.prefab`.
+- Porém esse prefab **não aparece em `Assets/_Project/Scenes/Consultorio.unity`** (a cena real do jogo) —
   ele só é usado dentro da cena de demonstração do próprio asset,
-  `Assets/Stethoscope/Scenes/Stethoscope.unity`, que também **não consta em
+  `Assets/ThirdParty/Stethoscope/Scenes/Stethoscope.unity`, que também **não consta em
   `ProjectSettings/EditorBuildSettings.asset`** (a única cena listada lá é `SampleScene.unity`).
 - O objeto que o jogador realmente usa como estetoscópio no exame físico (tag/`objectID`
   `estetoscopio`, visto em `Consultorio.unity`) é outro objeto, sem esse componente.
@@ -255,14 +255,14 @@ Como o travamento também aparece no Windows, foi feita uma varredura por todo `
 código próprio) atrás de qualquer `Update()`/`FixedUpdate()`/`LateUpdate()` que pudesse explicar
 um custo por frame comum às duas plataformas. Resultado:
 
-- **Nenhum script do próprio projeto** (`Assets/Scripts/*.cs`) tem `Update()`, `FixedUpdate()`
+- **Nenhum script do próprio projeto** (`Assets/_Project/Scripts/*.cs`) tem `Update()`, `FixedUpdate()`
   ou `LateUpdate()` — os únicos loops por frame do código do time estão dentro de corrotinas
   (`PatientAnimationController`, `LabOrderManager`), que só rodam durante uma transição pontual,
   não continuamente.
 - Foram encontrados 15 arquivos de terceiros com algum desses métodos (exemplos do TextMesh Pro,
   `AnimateHandOnInput.cs` das mãos do "Lets Make a VR Game", `XRPokeFollowAffordance.cs` do XR
   Interaction Toolkit, e o já descartado `SplineRope.cs`). Verificando o GUID de cada script
-  contra `Assets/Scenes/Consultorio.unity`, **nenhum deles está de fato instanciado na cena do
+  contra `Assets/_Project/Scenes/Consultorio.unity`, **nenhum deles está de fato instanciado na cena do
   jogo** — são exemplos/amostras dos pacotes que ficam soltos no projeto sem uso real.
 - Conclusão: o custo por frame não vem de um loop de script "solto" rodando sem necessidade; é
   mais provável que venha do lado de renderização/GPU (item 8.2) ou de chamadas pontuais caras
@@ -306,8 +306,8 @@ um custo por frame comum às duas plataformas. Resultado:
 
 ### 8.3 Alto — `FindObjectOfType` chamado dentro de callbacks de interação (hot path de XR)
 
-- `InstrumentInteraction.OnTriggerEnter()` (`Assets/Scripts/InstrumentInteraction.cs:25`) e
-  `XRSocketDisplayInteraction.OnSelectEntered()` (`Assets/Scripts/XRSocketDisplayInteraction.cs:34`)
+- `InstrumentInteraction.OnTriggerEnter()` (`Assets/_Project/Scripts/Interaction/InstrumentInteraction.cs:25`) e
+  `XRSocketDisplayInteraction.OnSelectEntered()` (`Assets/_Project/Scripts/Interaction/XRSocketDisplayInteraction.cs:34`)
   chamam `FindObjectOfType<PhysicalExamManager>()` **a cada colisão/seleção**, em vez de guardar
   uma referência em cache.
 - `FindObjectOfType` varre os objetos carregados da cena e é uma das chamadas mais caras da API
@@ -322,7 +322,7 @@ um custo por frame comum às duas plataformas. Resultado:
 
 ### 8.4 Médio — texturas de resultado de exame grandes e sem override para Android
 
-- `Assets/UIAssets/ImagensExames/MAPAPag2.png` (1,3 MB), `MAPAPag4.png` (1,2 MB),
+- `Assets/_Project/UI/ExamImages/MAPAPag2.png` (1,3 MB), `MAPAPag4.png` (1,2 MB),
   `Hemograma.png` (820 KB), `MAPAPag3.png` (770 KB), `MAPAPag1.png` (673 KB) — importadas como
   Sprite com `maxTextureSize: 2048`, mas **sem nenhum override específico para a plataforma
   Android** nas configurações de importação (só há overrides para `DefaultTexturePlatform`,
@@ -434,15 +434,15 @@ Implementação das recomendações de performance (seção 8.6) e de parte dos 
    redundantes** — são duas mecânicas de interação diferentes para instrumentos diferentes, então
    nenhum código foi alterado aqui; o ponto crítico foi fechado como "não é um bug", não como
    "corrigido".
-8. **Ferramenta de validação de conteúdo** (`Assets/Editor/ContentValidator.cs`, menu
+8. **Ferramenta de validação de conteúdo** (`Assets/_Project/Editor/ContentValidator.cs`, menu
    `VRClinic → Validar Conteúdo das Fases`): varre todos os `PatientPhaseSO` do projeto e avisa
    quando (a) um `examID` em `correctLabTestIDs` não tem `PhaseExamResult` correspondente
    (resultado ficaria invisível na tela de diagnóstico), ou (b) um `id` de `ScoreMapping` no
    `ScoreManager` não corresponde a nenhuma pergunta/instrumento/exame/diagnóstico real de
    nenhuma fase conhecida (provável texto desatualizado). Resolve o ponto crítico #8 e parte do #5
    de forma preventiva, sem travar o fluxo em tempo de execução.
-9. **Testes automatizados para `ScoreManager`** (`Assets/Tests/EditMode/ScoreManagerTests.cs`,
-   com `Assets/Tests/EditMode/MedSim.Tests.EditMode.asmdef`): cobrem mapeamento configurado vs.
+9. **Testes automatizados para `ScoreManager`** (`Assets/_Project/Tests/EditMode/ScoreManagerTests.cs`,
+   com `Assets/_Project/Tests/EditMode/MedSim.Tests.EditMode.asmdef`): cobrem mapeamento configurado vs.
    fallback default para as quatro categorias de pontuação, acumulação de pontos totais, ordem de
    `GetAllEntries()` e `ResetScores()`. Rodam no Test Runner do Editor (Window → General → Test
    Runner → EditMode). Testes para a máquina de estados do `PhaseManager` ficaram de fora desta
