@@ -1,17 +1,34 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class AudioManager : MonoBehaviour
 {
-    public AudioSource source;
+    public AudioSource voiceSource;
     public int maxSimultaneousSounds = 4;
 
     private readonly List<AudioSource> pool = new();
 
-    void Awake()
+    public void PlayVoice(AudioClip clip)
     {
-        if (source != null)
-            pool.Add(source);
+        if (clip == null) return;
+
+        if (voiceSource == null)
+        {
+            Debug.LogWarning("AudioManager: voiceSource não configurado, tocando a fala como efeito sonoro.", this);
+            Play(clip);
+            return;
+        }
+
+        voiceSource.Stop();
+        voiceSource.clip = clip;
+        voiceSource.Play();
+    }
+
+    public void StopVoice()
+    {
+        if (voiceSource != null)
+            voiceSource.Stop();
     }
 
     public void Play(AudioClip clip)
@@ -45,17 +62,20 @@ public class AudioManager : MonoBehaviour
 
         AudioSource oldest = pool[0];
         oldest.Stop();
+        pool.RemoveAt(0);
+        pool.Add(oldest);
         return oldest;
     }
 
     private AudioSource CreatePooledSource()
     {
         AudioSource created = gameObject.AddComponent<AudioSource>();
-        if (source != null)
+        created.playOnAwake = false;
+        if (voiceSource != null)
         {
-            created.outputAudioMixerGroup = source.outputAudioMixerGroup;
-            created.spatialBlend = source.spatialBlend;
-            created.volume = source.volume;
+            created.outputAudioMixerGroup = voiceSource.outputAudioMixerGroup;
+            created.spatialBlend = voiceSource.spatialBlend;
+            created.volume = voiceSource.volume;
         }
         pool.Add(created);
         return created;

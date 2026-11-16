@@ -114,12 +114,12 @@ public class AnamnesisManager : MonoBehaviour
     void PlayClip(AudioClip clip)
     {
         if (clip != null)
-            audioManager.Play(clip);
+            audioManager.PlayVoice(clip);
     }
 
     void PlayRandomClip(AudioClip[] clips)
     {
         if (clips != null && clips.Length > 0)
-            audioManager.Play(clips[Random.Range(0, clips.Length)]);
+            audioManager.PlayVoice(clips[Random.Range(0, clips.Length)]);
     }
 }

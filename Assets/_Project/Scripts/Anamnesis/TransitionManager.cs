@@ -55,7 +55,7 @@ public class TransitionManager : MonoBehaviour
 
         DialogueStepSO dialogue = dialogueSteps[dialogueIndex];
         if (dialogue.npcLineClip != null)
-            audioManager.Play(dialogue.npcLineClip);
+            audioManager.PlayVoice(dialogue.npcLineClip);
 
         optionText.text = dialogue.playerPrompt;
 
@@ -69,7 +69,7 @@ public class TransitionManager : MonoBehaviour
     {
         DialogueStepSO dialogue = dialogueSteps[dialogueIndex];
         if (dialogue.npcResponseClip != null)
-            audioManager.Play(dialogue.npcResponseClip);
+            audioManager.PlayVoice(dialogue.npcResponseClip);
 
         dialogueIndex++;
 
