@@ -26,6 +26,7 @@ public class PatientAnimationController : MonoBehaviour
     [Header("Trajeto")]
     public Transform[] waypoints;
     public float waitAtDestination = 3f;
+    public TimePassageEffect timePassageEffect;
 
     [Header("Movimento")]
     public float walkSpeed = 1f;
@@ -117,7 +118,10 @@ public class PatientAnimationController : MonoBehaviour
 
         patientAnimator.SetBool(IsWalking, false);
         yield return TurnTo(FacingRotation(waypoints[last].forward));
-        yield return new WaitForSeconds(waitAtDestination);
+        if (timePassageEffect != null)
+            yield return timePassageEffect.Play();
+        else
+            yield return new WaitForSeconds(waitAtDestination);
 
         patientAnimator.SetBool(IsWalking, true);
         for (int i = last - 1; i >= 0; i--)
