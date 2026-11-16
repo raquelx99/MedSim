@@ -216,6 +216,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 999251905}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 567071b54e170e44793a51008a81b651,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 999251909}
   m_SourcePrefab: {fileID: 100100000, guid: 567071b54e170e44793a51008a81b651, type: 3}
 --- !u!1 &19117096
 GameObject:
@@ -949,6 +953,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 292046727}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ae8b46c956d826f40b5b0b1bedde9755,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 292046728}
   m_SourcePrefab: {fileID: 100100000, guid: ae8b46c956d826f40b5b0b1bedde9755, type: 3}
 --- !u!1 &87215748
 GameObject:
@@ -2380,6 +2388,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   imageSlot: {fileID: 1168857685}
   panel: {fileID: 21560322}
+--- !u!114 &292046728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292046717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ba041d9639ef7542bb4352be1b95a12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  impactClips:
+  - {fileID: 8300000, guid: a350cb29f4e84a82acacb4e74ea080a4, type: 3}
+  - {fileID: 8300000, guid: fee2554af9624f859b9a18be79048891, type: 3}
+  - {fileID: 8300000, guid: 4bc04641758048399448c6804f190f14, type: 3}
+  minImpactSpeed: 0.4
+  maxImpactSpeed: 4
+  minVolume: 0.15
+  maxVolume: 1
+  pitchRange: {x: 0.9, y: 1.1}
+  cooldown: 0.1
+  surfaces:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  ignoreAfterStart: 0.5
 --- !u!1 &308785089
 GameObject:
   m_ObjectHideFlags: 0
@@ -3081,6 +3115,32 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 759483669}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &385769665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 385769651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ba041d9639ef7542bb4352be1b95a12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  impactClips:
+  - {fileID: 8300000, guid: a350cb29f4e84a82acacb4e74ea080a4, type: 3}
+  - {fileID: 8300000, guid: fee2554af9624f859b9a18be79048891, type: 3}
+  - {fileID: 8300000, guid: 4bc04641758048399448c6804f190f14, type: 3}
+  minImpactSpeed: 0.4
+  maxImpactSpeed: 4
+  minVolume: 0.15
+  maxVolume: 1
+  pitchRange: {x: 0.9, y: 1.1}
+  cooldown: 0.1
+  surfaces:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  ignoreAfterStart: 0.5
 --- !u!1001 &387701527
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4210,6 +4270,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 745013555}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0a4b633e92fe2bc40adf95a24ddb3f77,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 745013559}
   m_SourcePrefab: {fileID: 100100000, guid: 0a4b633e92fe2bc40adf95a24ddb3f77, type: 3}
 --- !u!1 &562859436
 GameObject:
@@ -4982,6 +5046,32 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 729762728}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &635144622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 635144608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ba041d9639ef7542bb4352be1b95a12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  impactClips:
+  - {fileID: 8300000, guid: a350cb29f4e84a82acacb4e74ea080a4, type: 3}
+  - {fileID: 8300000, guid: fee2554af9624f859b9a18be79048891, type: 3}
+  - {fileID: 8300000, guid: 4bc04641758048399448c6804f190f14, type: 3}
+  minImpactSpeed: 0.4
+  maxImpactSpeed: 4
+  minVolume: 0.15
+  maxVolume: 1
+  pitchRange: {x: 0.9, y: 1.1}
+  cooldown: 0.1
+  surfaces:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  ignoreAfterStart: 0.5
 --- !u!1 &654195455
 GameObject:
   m_ObjectHideFlags: 0
@@ -5877,6 +5967,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 635144618}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0d0a871ce0b468947b60d0f4828eca45,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 635144622}
   m_SourcePrefab: {fileID: 100100000, guid: 0d0a871ce0b468947b60d0f4828eca45, type: 3}
 --- !u!1 &743173542
 GameObject:
@@ -6281,6 +6375,32 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 549436818}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &745013559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 745013545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ba041d9639ef7542bb4352be1b95a12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  impactClips:
+  - {fileID: 8300000, guid: a350cb29f4e84a82acacb4e74ea080a4, type: 3}
+  - {fileID: 8300000, guid: fee2554af9624f859b9a18be79048891, type: 3}
+  - {fileID: 8300000, guid: 4bc04641758048399448c6804f190f14, type: 3}
+  minImpactSpeed: 0.4
+  maxImpactSpeed: 4
+  minVolume: 0.15
+  maxVolume: 1
+  pitchRange: {x: 0.9, y: 1.1}
+  cooldown: 0.1
+  surfaces:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  ignoreAfterStart: 0.5
 --- !u!1001 &751259854
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6467,6 +6587,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 385769661}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7ad4985b730bcbf46adbd63928f599ab,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 385769665}
   m_SourcePrefab: {fileID: 100100000, guid: 7ad4985b730bcbf46adbd63928f599ab, type: 3}
 --- !u!1 &771773557
 GameObject:
@@ -8657,6 +8781,32 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 8421461}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &999251909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 999251895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ba041d9639ef7542bb4352be1b95a12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  impactClips:
+  - {fileID: 8300000, guid: a350cb29f4e84a82acacb4e74ea080a4, type: 3}
+  - {fileID: 8300000, guid: fee2554af9624f859b9a18be79048891, type: 3}
+  - {fileID: 8300000, guid: 4bc04641758048399448c6804f190f14, type: 3}
+  minImpactSpeed: 0.4
+  maxImpactSpeed: 4
+  minVolume: 0.15
+  maxVolume: 1
+  pitchRange: {x: 0.9, y: 1.1}
+  cooldown: 0.1
+  surfaces:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  ignoreAfterStart: 0.5
 --- !u!4 &1014991757 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9156674278977800585, guid: 387da3a749befca4fb8e7bd6efd1c3cf,
@@ -9078,6 +9228,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1052486869}
+    - targetCorrespondingSourceObject: {fileID: 2249425145768205834, guid: ab7ff21c5d49bfc43934a50e8ccd96b8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1052486871}
   m_SourcePrefab: {fileID: 100100000, guid: ab7ff21c5d49bfc43934a50e8ccd96b8, type: 3}
 --- !u!4 &1052486865 stripped
 Transform:
@@ -9260,6 +9414,32 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &1052486871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 235564987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ba041d9639ef7542bb4352be1b95a12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  impactClips:
+  - {fileID: 8300000, guid: a350cb29f4e84a82acacb4e74ea080a4, type: 3}
+  - {fileID: 8300000, guid: fee2554af9624f859b9a18be79048891, type: 3}
+  - {fileID: 8300000, guid: 4bc04641758048399448c6804f190f14, type: 3}
+  minImpactSpeed: 0.4
+  maxImpactSpeed: 4
+  minVolume: 0.15
+  maxVolume: 1
+  pitchRange: {x: 0.9, y: 1.1}
+  cooldown: 0.1
+  surfaces:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  ignoreAfterStart: 0.5
 --- !u!1 &1055021629
 GameObject:
   m_ObjectHideFlags: 0
@@ -11417,6 +11597,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 727378743}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3b41ae3cde1bd0a44bff41f39984a63a,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1428147428}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3b41ae3cde1bd0a44bff41f39984a63a,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1428147427}
   m_SourcePrefab: {fileID: 100100000, guid: 3b41ae3cde1bd0a44bff41f39984a63a, type: 3}
 --- !u!4 &1428147426 stripped
 Transform:
@@ -11424,6 +11612,59 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1428147425}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1428147427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 727378742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ba041d9639ef7542bb4352be1b95a12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  impactClips:
+  - {fileID: 8300000, guid: a350cb29f4e84a82acacb4e74ea080a4, type: 3}
+  - {fileID: 8300000, guid: fee2554af9624f859b9a18be79048891, type: 3}
+  - {fileID: 8300000, guid: 4bc04641758048399448c6804f190f14, type: 3}
+  minImpactSpeed: 0.4
+  maxImpactSpeed: 4
+  minVolume: 0.15
+  maxVolume: 1
+  pitchRange: {x: 0.9, y: 1.1}
+  cooldown: 0.1
+  surfaces:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  ignoreAfterStart: 0.5
+--- !u!54 &1428147428
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 727378742}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &1444514075
 PrefabInstance:
   m_ObjectHideFlags: 0
