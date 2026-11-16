@@ -84,7 +84,8 @@ public class AnamnesisManager : MonoBehaviour
 
     void OnQuestionSelected(int chosenIndex)
     {
-        QuestionSO question = questionSteps[questionIndex].question;
+        AnamnesisStepSO step = questionSteps[questionIndex];
+        QuestionSO question = step.question;
         PlayRandomClip(question.patientResponses[chosenIndex].responseClips);
 
         bool isCorrect = chosenIndex == question.correctOptionIndex;
@@ -95,7 +96,10 @@ public class AnamnesisManager : MonoBehaviour
             actionID = question.prompt,
             isCorrect = isCorrect,
             justification = isCorrect ? "" : question.wrongJustification,
-            points = scoreManager.GetPointsForAnamnesis(question.prompt, isCorrect)
+            points = scoreManager.GetPointsForAnamnesis(question.prompt, isCorrect),
+            topic = !string.IsNullOrWhiteSpace(step.stepName) ? step.stepName : DisplayNames.AssetNameWithoutNumber(question),
+            chosenAnswer = question.options[chosenIndex],
+            expectedAnswer = question.options[question.correctOptionIndex]
         });
 
         questionIndex++;

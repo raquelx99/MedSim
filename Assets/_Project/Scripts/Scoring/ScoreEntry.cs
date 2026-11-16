@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public enum ScoreCategory
 {
     Anamnese,
@@ -14,6 +12,7 @@ public enum ErrorSeverity
     Moderado,
     Grave
 }
+
 public class ScoreEntry
 {
     public ScoreCategory category;
@@ -22,4 +21,8 @@ public class ScoreEntry
     public bool isCorrect;
     public string justification;
     public int points;
+
+    public string topic;
+    public string chosenAnswer;
+    public string expectedAnswer;
 }

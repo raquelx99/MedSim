@@ -2,7 +2,9 @@
     "name": "MedSim.Editor",
     "rootNamespace": "",
     "references": [
-        "GUID:e9f552ac92759bd7afebc2da06b03609"
+        "GUID:e9f552ac92759bd7afebc2da06b03609",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:2bafac87e7f4b9b418d9448d219b01ab"
     ],
     "includePlatforms": [
         "Editor"

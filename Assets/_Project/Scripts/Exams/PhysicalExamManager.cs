@@ -32,7 +32,8 @@ public class PhysicalExamManager : MonoBehaviour
     {
         if (PhaseManager.Instance.currentPart != PhaseManager.Part.Exam)
         {
-            RegisterEntry(objectID, false, "Tentativa de uso de objeto fora da fase de exame físico.", OutOfPhasePenalty);
+            RegisterEntry(objectID, false, "Tentativa de uso de objeto fora da fase de exame físico.", OutOfPhasePenalty,
+                $"Usou o {DisplayNames.Instrument(objectID)} antes do exame físico", "Usar os instrumentos somente na etapa de exame físico");
             return;
         }
 
@@ -48,13 +49,15 @@ public class PhysicalExamManager : MonoBehaviour
             if (usedObjectIDs.Contains(requiredID)) continue;
 
             RegisterEntry(requiredID, false, "Instrumento essencial não foi utilizado.",
-                scoreManager.GetPointsForPhysicalExam(requiredID, false));
+                scoreManager.GetPointsForPhysicalExam(requiredID, false),
+                "Não utilizado", $"Examinar o paciente com o {DisplayNames.Instrument(requiredID)}");
         }
 
         PhaseEvents.RaiseStepFinished();
     }
 
-    void RegisterEntry(string objectID, bool isCorrect, string justification, int points)
+    void RegisterEntry(string objectID, bool isCorrect, string justification, int points,
+        string chosenAnswer = null, string expectedAnswer = null)
     {
         scoreManager.RegisterScoreEntry(new ScoreEntry
         {
@@ -63,7 +66,10 @@ public class PhysicalExamManager : MonoBehaviour
             actionID = objectID,
             isCorrect = isCorrect,
             justification = justification,
-            points = points
+            points = points,
+            topic = DisplayNames.Instrument(objectID),
+            chosenAnswer = chosenAnswer,
+            expectedAnswer = expectedAnswer
         });
     }
 }

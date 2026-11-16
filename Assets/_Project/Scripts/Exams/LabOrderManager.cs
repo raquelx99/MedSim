@@ -56,11 +56,14 @@ public class LabOrderManager : MonoBehaviour
                 labID,
                 isCorrect,
                 isCorrect ? ErrorSeverity.Leve : ErrorSeverity.Moderado,
-                isCorrect ? "" : "Exame desnecessário para o quadro clínico.");
+                isCorrect ? "" : "Exame desnecessário para o quadro clínico.",
+                "Solicitado",
+                isCorrect ? "Solicitar" : "Não solicitar");
         }
 
         foreach (string requiredID in phaseData.correctLabTestIDs.Where(id => !selectedLabs.Contains(id)))
-            RegisterLabEntry(requiredID, false, ErrorSeverity.Moderado, "Exame essencial não solicitado.");
+            RegisterLabEntry(requiredID, false, ErrorSeverity.Moderado, "Exame essencial não solicitado.",
+                "Não solicitado", "Solicitar");
 
         PhaseEvents.RaiseStepFinished();
     }
@@ -145,7 +148,8 @@ public class LabOrderManager : MonoBehaviour
             background.color = isOn ? SelectedToggleColor : UnselectedToggleColor;
     }
 
-    void RegisterLabEntry(string labID, bool isCorrect, ErrorSeverity severity, string justification)
+    void RegisterLabEntry(string labID, bool isCorrect, ErrorSeverity severity, string justification,
+        string chosenAnswer, string expectedAnswer)
     {
         scoreManager.RegisterScoreEntry(new ScoreEntry
         {
@@ -154,8 +158,18 @@ public class LabOrderManager : MonoBehaviour
             actionID = labID,
             isCorrect = isCorrect,
             justification = justification,
-            points = scoreManager.GetPointsForLabExam(labID, isCorrect)
+            points = scoreManager.GetPointsForLabExam(labID, isCorrect),
+            topic = ExamName(labID),
+            chosenAnswer = chosenAnswer,
+            expectedAnswer = expectedAnswer
         });
+    }
+
+    string ExamName(string examID)
+    {
+        ExamTypeSO examType = FindResult(examID)?.examType;
+        bool hasName = examType != null && !string.IsNullOrEmpty(examType.examName);
+        return hasName ? examType.examName : $"Exame {examID}";
     }
 
     PhaseExamResult FindResult(string examID)

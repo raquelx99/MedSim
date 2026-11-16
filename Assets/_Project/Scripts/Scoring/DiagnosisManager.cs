@@ -50,7 +50,10 @@ public class DiagnosisManager : MonoBehaviour
             actionID = chosenDiagnosis,
             isCorrect = isCorrect,
             justification = isCorrect ? "" : "Diagnóstico incorreto.",
-            points = scoreManager.GetPointsForDiagnosis(chosenDiagnosis, isCorrect)
+            points = scoreManager.GetPointsForDiagnosis(chosenDiagnosis, isCorrect),
+            topic = "Hipótese diagnóstica",
+            chosenAnswer = DisplayNames.Capitalize(chosenDiagnosis),
+            expectedAnswer = DisplayNames.Capitalize(phaseData.possibleDiagnosis[phaseData.correctDiagnosisIndex])
         });
 
         PhaseEvents.RaiseStepFinished();
