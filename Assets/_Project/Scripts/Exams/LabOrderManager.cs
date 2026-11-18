@@ -55,15 +55,16 @@ public class LabOrderManager : MonoBehaviour
             RegisterLabEntry(
                 labID,
                 isCorrect,
-                isCorrect ? ErrorSeverity.Leve : ErrorSeverity.Moderado,
+                isCorrect ? ErrorSeverity.Leve : phaseData.unnecessaryLabSeverity,
+                isCorrect ? ErrorKind.None : ErrorKind.Unnecessary,
                 isCorrect ? "" : "Exame desnecessário para o quadro clínico.",
                 "Solicitado",
                 isCorrect ? "Solicitar" : "Não solicitar");
         }
 
         foreach (string requiredID in phaseData.correctLabTestIDs.Where(id => !selectedLabs.Contains(id)))
-            RegisterLabEntry(requiredID, false, ErrorSeverity.Moderado, "Exame essencial não solicitado.",
-                "Não solicitado", "Solicitar");
+            RegisterLabEntry(requiredID, false, phaseData.missingLabSeverity, ErrorKind.Omission,
+                "Exame essencial não solicitado.", "Não solicitado", "Solicitar");
 
         PhaseEvents.RaiseStepFinished();
     }
@@ -148,13 +149,14 @@ public class LabOrderManager : MonoBehaviour
             background.color = isOn ? SelectedToggleColor : UnselectedToggleColor;
     }
 
-    void RegisterLabEntry(string labID, bool isCorrect, ErrorSeverity severity, string justification,
+    void RegisterLabEntry(string labID, bool isCorrect, ErrorSeverity severity, ErrorKind kind, string justification,
         string chosenAnswer, string expectedAnswer)
     {
         scoreManager.RegisterScoreEntry(new ScoreEntry
         {
             category = ScoreCategory.LabExams,
             severity = severity,
+            kind = kind,
             actionID = labID,
             isCorrect = isCorrect,
             justification = justification,

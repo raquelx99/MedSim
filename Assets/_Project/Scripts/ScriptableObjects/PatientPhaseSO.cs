@@ -7,9 +7,15 @@ public class PatientPhaseSO : ScriptableObject
     public string phaseName;
     public DialogueStepSO[] dialogueSteps;
     public AnamnesisStepSO[] anamnesisSteps;
-    public string[] requiredExamObjectIDs;      
+    public string[] requiredExamObjectIDs;
     public string[] correctLabTestIDs;
-    public PhaseExamResult[] examResults;             
-    public string[] possibleDiagnosis;            
-    public int correctDiagnosisIndex;            
+    public PhaseExamResult[] examResults;
+    public string[] possibleDiagnosis;
+    public int correctDiagnosisIndex;
+
+    [Header("Gravidade dos erros neste caso")]
+    public ErrorSeverity missingPhysicalExamSeverity = ErrorSeverity.Moderado;
+    public ErrorSeverity missingLabSeverity = ErrorSeverity.Moderado;
+    public ErrorSeverity unnecessaryLabSeverity = ErrorSeverity.Moderado;
+    public ErrorSeverity wrongDiagnosisSeverity = ErrorSeverity.Grave;
 }

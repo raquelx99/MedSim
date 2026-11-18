@@ -27,6 +27,22 @@ public static class DisplayNames
         };
     }
 
+    public static string CategoryShort(ScoreCategory category)
+    {
+        return category == ScoreCategory.LabExams ? "Exames" : Category(category);
+    }
+
+    public static string Severity(ErrorSeverity severity)
+    {
+        return severity switch
+        {
+            ErrorSeverity.Grave => "Grave",
+            ErrorSeverity.Moderado => "Moderado",
+            ErrorSeverity.Leve => "Leve",
+            _ => severity.ToString()
+        };
+    }
+
     public static string Instrument(string id)
     {
         if (string.IsNullOrEmpty(id))

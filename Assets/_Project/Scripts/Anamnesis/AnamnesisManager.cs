@@ -92,7 +92,8 @@ public class AnamnesisManager : MonoBehaviour
         scoreManager.RegisterScoreEntry(new ScoreEntry
         {
             category = ScoreCategory.Anamnese,
-            severity = isCorrect ? ErrorSeverity.Leve : ErrorSeverity.Moderado,
+            severity = isCorrect ? ErrorSeverity.Leve : question.wrongSeverity,
+            kind = isCorrect ? ErrorKind.None : ErrorKind.WrongChoice,
             actionID = question.prompt,
             isCorrect = isCorrect,
             justification = isCorrect ? "" : question.wrongJustification,

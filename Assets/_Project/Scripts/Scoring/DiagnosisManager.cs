@@ -46,7 +46,8 @@ public class DiagnosisManager : MonoBehaviour
         scoreManager.RegisterScoreEntry(new ScoreEntry
         {
             category = ScoreCategory.Diagnosis,
-            severity = ErrorSeverity.Grave,
+            severity = isCorrect ? ErrorSeverity.Leve : phaseData.wrongDiagnosisSeverity,
+            kind = isCorrect ? ErrorKind.None : ErrorKind.WrongChoice,
             actionID = chosenDiagnosis,
             isCorrect = isCorrect,
             justification = isCorrect ? "" : "Diagnóstico incorreto.",

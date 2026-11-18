@@ -17,6 +17,9 @@ public class QuestionSO : ScriptableObject
 
     [Header("Justificativa textual para resposta “errada”")]
     [TextArea] public string wrongJustification;
+
+    [Header("Gravidade clínica de escolher a opção errada")]
+    public ErrorSeverity wrongSeverity = ErrorSeverity.Moderado;
 }
 
 [System.Serializable]

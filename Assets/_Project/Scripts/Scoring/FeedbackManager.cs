@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +8,10 @@ using UnityEngine.UI;
 public class FeedbackManager : MonoBehaviour
 {
     private const string Gap = "<line-height=60%>\n</line-height>\n";
+    private const string ValueColumn = "<pos=36%>";
+    private const string DeltaColumn = "<pos=78%>";
+    private const string DurationColumn = "<pos=50%>";
+    private const int BarSegments = 12;
 
     [Header("UI References")]
     public GameObject feedbackPanel;
@@ -29,6 +32,7 @@ public class FeedbackManager : MonoBehaviour
     public Color wrongColor = new Color32(0xC5, 0x30, 0x30, 0xFF);
     public Color warningColor = new Color32(0xB7, 0x79, 0x1F, 0xFF);
     public Color mutedColor = new Color32(0x4A, 0x55, 0x68, 0xFF);
+    public Color barTrackColor = new Color32(0xD9, 0xDE, 0xE5, 0xFF);
 
     private readonly List<Section> sections = new();
     private readonly List<Page> pages = new();
@@ -62,7 +66,13 @@ public class FeedbackManager : MonoBehaviour
     {
         feedbackPanel.SetActive(true);
 
-        BuildSections(scoreManager.GetAllEntries().ToList());
+        List<ScoreEntry> entries = scoreManager.GetAllEntries().ToList();
+        var evaluation = new CaseEvaluation(entries);
+
+        AttemptRecord previous = AttemptHistory.GetLast(phaseManager.CaseID);
+        AttemptRecord current = AttemptHistory.Record(phaseManager.CaseID, evaluation, phaseManager.totalPhaseTime);
+
+        BuildSections(entries, evaluation, previous, current);
         SplitSectionsIntoPages();
         BindButtons();
 
@@ -140,10 +150,13 @@ public class FeedbackManager : MonoBehaviour
             pageIndicatorText.text = $"{currentPage + 1} / {pages.Count}";
     }
 
-    void BuildSections(List<ScoreEntry> entries)
+    void BuildSections(List<ScoreEntry> entries, CaseEvaluation evaluation, AttemptRecord previous, AttemptRecord current)
     {
         sections.Clear();
-        sections.Add(new Section("Resumo do atendimento", BuildSummary(entries)));
+        sections.Add(new Section("Resumo do atendimento", BuildSummary(evaluation, current)));
+
+        if (previous != null)
+            sections.Add(new Section("Evolução desde a última tentativa", BuildEvolution(evaluation, previous)));
 
         List<ScoreEntry> hits = entries.Where(e => e.isCorrect).ToList();
         if (hits.Count > 0)
@@ -152,36 +165,114 @@ public class FeedbackManager : MonoBehaviour
         foreach (IGrouping<ScoreCategory, ScoreEntry> errors in GroupByCategory(entries.Where(e => !e.isCorrect)))
             sections.Add(new Section($"Para revisar: {DisplayNames.Category(errors.Key)}", BuildReview(errors)));
 
-        sections.Add(new Section("Próximos passos", BuildNextSteps(entries)));
+        sections.Add(new Section("Tempo de atendimento", BuildTime(evaluation, previous)));
+        sections.Add(new Section("Próximo objetivo", BuildNextSteps(entries, evaluation)));
     }
 
-    string BuildSummary(List<ScoreEntry> entries)
+    string BuildSummary(CaseEvaluation evaluation, AttemptRecord current)
     {
-        int total = entries.Count;
-        int correct = entries.Count(e => e.isCorrect);
-        float ratio = Ratio(correct, total);
+        var text = new StringBuilder();
+        AppendMasteryHeader(text, evaluation, current);
+        AppendQualitativeAnalysis(text, evaluation);
+        AppendCompetencyBars(text, evaluation);
+        AppendSeverityCounts(text, evaluation);
+        return text.ToString();
+    }
+
+    void AppendMasteryHeader(StringBuilder text, CaseEvaluation evaluation, AttemptRecord current)
+    {
         float score = Mathf.Max(0f, scoreManager.GetCurrentTotalPoints());
 
-        var text = new StringBuilder();
         text.Append("<align=center>");
-        text.Append(Size(Bold(Colored(score.ToString("F0"), accentColor)), 240)).Append('\n');
-        text.Append(Colored("pontos", mutedColor)).Append('\n');
-        text.Append(Gap);
-        text.Append(Size(Bold(Colored(GradeLabel(ratio), GradeColor(ratio))), 120)).Append('\n');
-        text.Append(Colored($"{correct} de {total} ações corretas ({ratio * 100f:F0}%)", mutedColor)).Append('\n');
+        text.Append(Colored("Domínio do caso", mutedColor)).Append('\n');
+        text.Append(Size(Bold(Colored(CaseEvaluation.LevelName(evaluation.Level), LevelColor(evaluation.Level))), 170)).Append('\n');
+        text.Append(Colored($"{score:F0} pontos  ·  tentativa {current.attemptNumber}", mutedColor)).Append('\n');
         text.Append("</align>");
         text.Append(Gap);
+    }
 
-        text.Append(Bold(Colored("Desempenho por etapa", accentColor))).Append('\n');
-        foreach (IGrouping<ScoreCategory, ScoreEntry> category in GroupByCategory(entries))
+    void AppendQualitativeAnalysis(StringBuilder text, CaseEvaluation evaluation)
+    {
+        text.Append(Italic(evaluation.QualitativeSummary)).Append('\n');
+
+        if (evaluation.IsCappedBySeverity)
         {
-            int categoryHits = category.Count(e => e.isCorrect);
-            int categoryTotal = category.Count();
-            string result = Bold(Colored($"{categoryHits}/{categoryTotal}", GradeColor(Ratio(categoryHits, categoryTotal))));
-            text.Append($"• {DisplayNames.Category(category.Key)}: {result}\n");
+            string reason = evaluation.SevereErrors > 0 ? "Um erro grave" : "Erros moderados recorrentes";
+            string level = CaseEvaluation.LevelName(evaluation.Level);
+            text.Append(Colored($"{reason} limitou a classificação a {level}.", wrongColor)).Append('\n');
+        }
+
+        text.Append(Gap);
+    }
+
+    void AppendCompetencyBars(StringBuilder text, CaseEvaluation evaluation)
+    {
+        text.Append(Heading("Desempenho por competência"));
+        foreach (CompetencyResult competency in evaluation.Competencies)
+        {
+            Color color = RatioColor(competency.Ratio);
+            text.Append(DisplayNames.CategoryShort(competency.Category));
+            text.Append(ValueColumn).Append(Bar(competency.Ratio, color));
+            text.Append(DeltaColumn).Append(Bold(Colored(Percent(competency.Ratio), color))).Append('\n');
+        }
+
+        text.Append(Gap);
+    }
+
+    void AppendSeverityCounts(StringBuilder text, CaseEvaluation evaluation)
+    {
+        text.Append(Heading("Gravidade dos erros"));
+        text.Append(SeverityCount(evaluation.SevereErrors, "grave", "graves", wrongColor)).Append("   ");
+        text.Append(SeverityCount(evaluation.ModerateErrors, "moderado", "moderados", warningColor)).Append("   ");
+        text.Append(SeverityCount(evaluation.MildErrors, "leve", "leves", mutedColor)).Append('\n');
+    }
+
+    string SeverityCount(int count, string singular, string plural, Color colorWhenPresent)
+    {
+        string label = $"{count} {(count == 1 ? singular : plural)}";
+        return Colored(label, count > 0 ? colorWhenPresent : mutedColor);
+    }
+
+    string BuildEvolution(CaseEvaluation evaluation, AttemptRecord previous)
+    {
+        var text = new StringBuilder();
+        text.Append(Colored($"Comparação com a tentativa {previous.attemptNumber}.", mutedColor)).Append('\n');
+        text.Append(Gap);
+
+        text.Append(Heading("Domínio do caso"));
+        string currentLevel = Bold(Colored(CaseEvaluation.LevelName(evaluation.Level), LevelColor(evaluation.Level)));
+        text.Append($"{CaseEvaluation.LevelName(previous.level)} para {currentLevel}\n");
+        text.Append(Gap);
+
+        text.Append(Heading("Competências"));
+        foreach (CompetencyResult competency in evaluation.Competencies)
+            AppendCompetencyEvolution(text, competency, previous);
+        text.Append(Gap);
+
+        text.Append(Heading("Erros graves"));
+        Color severeColor = LowerIsBetterColor(evaluation.SevereErrors - previous.severeErrors);
+        text.Append($"{previous.severeErrors} para {Bold(Colored(evaluation.SevereErrors.ToString(), severeColor))}\n");
+
+        if (!string.IsNullOrWhiteSpace(previous.nextGoal))
+        {
+            text.Append(Gap);
+            text.Append(Heading("Meta desta tentativa"));
+            text.Append(Colored(previous.nextGoal, mutedColor)).Append('\n');
         }
 
         return text.ToString();
+    }
+
+    void AppendCompetencyEvolution(StringBuilder text, CompetencyResult competency, AttemptRecord previous)
+    {
+        text.Append(DisplayNames.CategoryShort(competency.Category)).Append(ValueColumn);
+
+        if (previous.competencyRatios.TryGetValue(competency.Category, out float before))
+            text.Append($"{Percent(before)} para {Bold(Percent(competency.Ratio))}{DeltaColumn}{Delta(competency.Ratio - before)}");
+        else
+            text.Append(Bold(Percent(competency.Ratio)));
+
+        text.Append('\n');
     }
 
     string BuildStrengths(List<ScoreEntry> hits)
@@ -202,7 +293,8 @@ public class FeedbackManager : MonoBehaviour
     {
         List<(ScoreEntry error, int count)> uniqueErrors = errors
             .GroupBy(e => (TopicOf(e), e.chosenAnswer, e.expectedAnswer, e.justification))
-            .Select(repeated => (repeated.First(), repeated.Count()))
+            .Select(repeated => (error: repeated.OrderByDescending(e => e.severity).First(), count: repeated.Count()))
+            .OrderByDescending(item => item.error.severity)
             .ToList();
 
         bool answersAreSpeech = errors.Key == ScoreCategory.Anamnese;
@@ -214,6 +306,7 @@ public class FeedbackManager : MonoBehaviour
 
         foreach ((ScoreEntry error, int count) in uniqueErrors)
         {
+            text.Append(SeverityTag(error.severity)).Append(' ');
             text.Append(Bold(Colored(EscapeRichText(TopicOf(error)), accentColor)));
             if (count > 1)
                 text.Append(Colored($"  ({count}x)", mutedColor));
@@ -231,8 +324,47 @@ public class FeedbackManager : MonoBehaviour
         return text.ToString();
     }
 
-    string BuildNextSteps(List<ScoreEntry> entries)
+    string BuildTime(CaseEvaluation evaluation, AttemptRecord previous)
     {
+        var text = new StringBuilder();
+        text.Append("<align=center>");
+        text.Append(Size(Bold(Colored(FormatDuration(phaseManager.totalPhaseTime), accentColor)), 170)).Append('\n');
+        text.Append(Colored("sem penalização por tempo nesta modalidade", mutedColor)).Append('\n');
+        text.Append("</align>");
+        text.Append(Gap);
+
+        text.Append(Heading("Por etapa"));
+        AppendDuration(text, "Anamnese", PhaseManager.Part.Anamnese);
+        AppendDuration(text, "Exame físico", PhaseManager.Part.Exam);
+        AppendDuration(text, "Exames", PhaseManager.Part.Labs, PhaseManager.Part.Transition);
+        AppendDuration(text, "Diagnóstico", PhaseManager.Part.Diagnosis);
+
+        if (previous != null && previous.totalSeconds > 0f)
+            text.Append(Colored($"Tentativa anterior: {FormatDuration(previous.totalSeconds)}", mutedColor)).Append('\n');
+        text.Append(Gap);
+
+        text.Append(Colored(TimeReflection(evaluation.Level), mutedColor));
+        return text.ToString();
+    }
+
+    void AppendDuration(StringBuilder text, string label, params PhaseManager.Part[] parts)
+    {
+        text.Append($"{label}{DurationColumn}{FormatDuration(phaseManager.DurationOf(parts))}\n");
+    }
+
+    static string TimeReflection(MasteryLevel level)
+    {
+        return level >= MasteryLevel.Adequado
+            ? "Com desempenho clínico adequado, use o tempo para refletir sobre a fluidez do atendimento ao longo das tentativas."
+            : "Priorize a qualidade das decisões. O tempo só é um bom indicador quando o desempenho clínico já está adequado.";
+    }
+
+    string BuildNextSteps(List<ScoreEntry> entries, CaseEvaluation evaluation)
+    {
+        var text = new StringBuilder();
+        text.Append(Bold(Colored(evaluation.NextGoal, warningColor))).Append('\n');
+        text.Append(Gap);
+
         List<ScoreCategory> categoriesWithErrors = entries
             .Where(e => !e.isCorrect)
             .Select(e => e.category)
@@ -240,26 +372,20 @@ public class FeedbackManager : MonoBehaviour
             .OrderBy(category => category)
             .ToList();
 
-        var text = new StringBuilder();
         if (categoriesWithErrors.Count == 0)
         {
             text.Append(Bold(Colored("Excelente atendimento!", correctColor))).Append('\n');
-            text.Append(Gap);
-            text.Append("Você conduziu todas as etapas corretamente. Tente refazer o caso buscando a mesma precisão com mais agilidade.\n");
+            text.Append("Você conduziu todas as etapas corretamente.\n");
         }
         else
         {
-            text.Append("No próximo atendimento, foque nestes pontos:\n");
-            text.Append(Gap);
+            text.Append(Heading("Para estudar"));
             foreach (ScoreCategory category in categoriesWithErrors)
-            {
-                text.Append(Bold(Colored(DisplayNames.Category(category), warningColor))).Append('\n');
-                text.Append($"<indent=4%>{StudySuggestion(category)}</indent>\n");
-                text.Append(Gap);
-            }
+                text.Append($"• {Bold(DisplayNames.Category(category))}: {StudySuggestion(category)}\n");
         }
+        text.Append(Gap);
 
-        text.Append(Colored($"Toque em {Bold("Tentar novamente")} para refazer o caso.", mutedColor));
+        text.Append(Colored($"Toque em {Bold("Tentar novamente")} para refazer o caso. A meta ficará visível na prancheta.", mutedColor));
         return text.ToString();
     }
 
@@ -267,38 +393,81 @@ public class FeedbackManager : MonoBehaviour
     {
         return category switch
         {
-            ScoreCategory.Anamnese => "Siga a ordem da anamnese: queixa principal, história da doença atual, antecedentes, medicações, história familiar e hábitos. Prefira perguntas abertas antes das específicas.",
-            ScoreCategory.PhysicalExam => "Use os instrumentos apenas na etapa de exame físico e confira se mediu os sinais vitais essenciais para o quadro do paciente.",
-            ScoreCategory.LabExams => "Peça apenas os exames que ajudam a confirmar ou descartar suas hipóteses. Exames desnecessários também contam como erro.",
-            ScoreCategory.Diagnosis => "Antes de confirmar, relacione os achados da anamnese, do exame físico e dos exames com os critérios de cada hipótese.",
-            _ => "Revise essa etapa para fortalecer seu raciocínio clínico."
+            ScoreCategory.Anamnese => "siga a ordem da anamnese: queixa principal, história da doença atual, antecedentes, medicações, história familiar e hábitos.",
+            ScoreCategory.PhysicalExam => "use os instrumentos apenas na etapa de exame físico e confira os sinais vitais essenciais para o quadro.",
+            ScoreCategory.LabExams => "peça apenas os exames que ajudam a confirmar ou descartar suas hipóteses.",
+            ScoreCategory.Diagnosis => "relacione os achados da anamnese, do exame físico e dos exames com os critérios de cada hipótese.",
+            _ => "revise essa etapa para fortalecer seu raciocínio clínico."
         };
     }
 
-    static string GradeLabel(float ratio)
+    string SeverityTag(ErrorSeverity severity)
     {
-        if (ratio >= 0.85f) return "Excelente";
-        if (ratio >= 0.65f) return "Bom desempenho";
-        if (ratio >= 0.4f) return "Regular";
-        return "Precisa revisar";
+        Color color = severity switch
+        {
+            ErrorSeverity.Grave => wrongColor,
+            ErrorSeverity.Moderado => warningColor,
+            _ => mutedColor
+        };
+        return Size(Bold(Colored($"[{DisplayNames.Severity(severity)}]", color)), 80);
     }
 
-    Color GradeColor(float ratio)
+    string Bar(float ratio, Color fillColor)
     {
-        if (ratio >= 0.65f) return correctColor;
-        if (ratio >= 0.4f) return warningColor;
+        int filled = Mathf.Clamp(Mathf.RoundToInt(ratio * BarSegments), 0, BarSegments);
+        int empty = BarSegments - filled;
+
+        return "<mspace=0.55em><color=#00000000>" +
+               Highlighted(new string('0', filled), fillColor) +
+               Highlighted(new string('0', empty), barTrackColor) +
+               "</color></mspace>";
+    }
+
+    string Delta(float ratioDelta)
+    {
+        int points = Mathf.RoundToInt(ratioDelta * 100f);
+        if (points == 0)
+            return Colored("=", mutedColor);
+
+        string label = points > 0 ? $"+{points}" : points.ToString();
+        return Bold(Colored(label, points > 0 ? correctColor : wrongColor));
+    }
+
+    Color LowerIsBetterColor(int delta)
+    {
+        if (delta < 0) return correctColor;
+        if (delta > 0) return wrongColor;
+        return mutedColor;
+    }
+
+    Color LevelColor(MasteryLevel level)
+    {
+        if (level >= MasteryLevel.Adequado) return correctColor;
+        if (level == MasteryLevel.EmProgresso) return warningColor;
         return wrongColor;
     }
+
+    Color RatioColor(float ratio)
+    {
+        if (ratio >= CaseEvaluation.AdequadoThreshold) return correctColor;
+        if (ratio >= CaseEvaluation.EmProgressoThreshold) return warningColor;
+        return wrongColor;
+    }
+
+    string Heading(string title) => Bold(Colored(title, accentColor)) + "\n";
 
     static IEnumerable<IGrouping<ScoreCategory, ScoreEntry>> GroupByCategory(IEnumerable<ScoreEntry> entries)
     {
         return entries.GroupBy(e => e.category).OrderBy(group => group.Key);
     }
 
-    static float Ratio(int part, int total)
+    static string FormatDuration(float seconds)
     {
-        return total > 0 ? (float)part / total : 0f;
+        int total = Mathf.Max(0, Mathf.RoundToInt(seconds));
+        return $"{total / 60}m{total % 60:00}s";
     }
+
+    static string Percent(float ratio) => $"{ratio * 100f:F0}%";
 
     static string TopicOf(ScoreEntry entry)
     {
@@ -322,9 +491,13 @@ public class FeedbackManager : MonoBehaviour
 
     static string Bold(string text) => $"<b>{text}</b>";
 
+    static string Italic(string text) => $"<i>{text}</i>";
+
     static string Size(string text, int percent) => $"<size={percent}%>{text}</size>";
 
     static string Colored(string text, Color color) => $"<color=#{ColorUtility.ToHtmlStringRGB(color)}>{text}</color>";
+
+    static string Highlighted(string text, Color color) => $"<mark=#{ColorUtility.ToHtmlStringRGBA(color)}>{text}</mark>";
 
     static string EscapeRichText(string text) => string.IsNullOrEmpty(text) ? text : $"<noparse>{text}</noparse>";
 }
